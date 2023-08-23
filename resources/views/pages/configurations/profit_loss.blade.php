@@ -3,10 +3,14 @@
     <!-- All Orders Block -->
     <div class="content-header">
         <div class="header-section">
-            <h1 style="font-size: 20px!important;">
-                <i class="fa fa-comments-o"></i>Cash Flow Statement from {{date('d-m-y', strtotime($date1))}}
-                to {{date('d-m-y', strtotime($date2))}}
+            <h1 style="font-weight: bold">
+                <i class="fa fa-comments-o"></i>Cash Flow Statement
             </h1>
+            <h2>From
+                <strong style="font-weight: bold">{{date('m/d/Y', strtotime($date1))}}</strong>
+                To
+                <strong style="font-weight: bold">{{date('m/d/Y', strtotime($date2))}}</strong>
+            </h2>
         </div>
     </div>
 
@@ -60,7 +64,7 @@
             {{--<div class="block-options pull-right">--}}
             {{--<a href="{{url('report/profit/loss')}}" class="btn btn-alt btn-sm btn-primary"--}}
             {{--data-toggle="tooltip"--}}
-            {{--title="Reset Filters"><i class="fa fa-refresh"></i></a>--}}
+            {{--title="Reset Filters"><i class="fa fa-refresh"></i>--}}
             {{--<button class="btn btn-alt btn-sm btn-primary" onClick="window.print()"><i class="fa fa-download"></i></button>--}}
 
             {{--</div>--}}
@@ -70,150 +74,82 @@
                 <div class="table-responsive">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
-                        <hr style="border-top:3px solid red">
-                        <div class="col-md-12">
-                            <div class="col-md-6">
-                                <h4>
-                                    <a href="javascript:void(0)" style="font-size:large;color:black"><strong>Cash in
-                                            Hand as on {{date('d-m-y', strtotime($date1))}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></a><br>
-                                </h4>
-                            </div>
-                            <div class="col-md-6 text-right" style="padding-right: 0!important;">
-                                <a href="javascript:void(0)"
-                                   style="color: black!important;font-weight:bold">{{number_format($cashInPutPre)}}</a>
-                            </div>
-                        </div>
-                        <div class="col-md-12" style="margin-top: 1em">
-                            <table id="prt-table" class="display nowrap dtr-inline">
-                                <thead>
-                                <tr>
-                                    <th style="font-size: large">Inflows</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="col-md-12">
-                            <table id="pr-table" class="display nowrap dataTable dtr-inline"
-                                   style="margin: 1em 0 0 3em">
-                                <thead>
-                                <tr>
-                                    <th colspan="1">Description</th>
-                                    <th class="text-center" style="width: 100px;">$</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td style="padding-left:18px">
-                                        <h4>
-                                            <a href="javascript:void(0)"><strong>Sales</strong></a><br>
-                                            <small></small>
-                                        </h4>
-                                    </td>
-                                    <td class="text-center "><a
-                                                href="javascript:void(0)">{{number_format($sales)}}</a></td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left:18px">
-                                        <h4>
-                                            <a href="javascript:void(0)"><strong>Cash input</strong></a><br>
-                                            <small></small>
-                                        </h4>
-                                    </td>
-                                    <td class="text-center "><a
-                                                href="javascript:void(0)">{{number_format($cashInPut)}}</a></td>
-                                </tr>
-                                <tr>
-                                    <td style="padding-left:18px">
-                                        <h4>
-                                            <a href="javascript:void(0)"><strong>Total Inflows</strong></a><br>
-                                            <small></small>
-                                        </h4>
-                                    </td>
-                                    <td class="text-center "><a
-                                                href="javascript:void(0)">{{number_format($grossCashInflow)}}</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-12">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th style="font-size: large">Outflows</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="col-md-12">
-                            <table id="ls-table" class="display nowrap dataTable dtr-inline"
-                                   style="margin: 1em 0 0 3em">
-                                <thead>
-                                <tr>
-                                    <th>Description</th>
-                                    <th class="text-center " style="width: 100px;">$</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td style="padding-left:18px">
-                                        <h4>
-                                            <a href="javascript:void(0)"><strong>Purchases</strong></a><br>
-                                            <small></small>
-                                        </h4>
-                                    </td>
-                                    <td class="text-center "><a
-                                                href="javascript:void(0)">{{number_format($purchases)}}</a></td>
-                                </tr>
-                                @if(!empty($expenseTypesNp) && $expenseTypesNp!=null)
-                                    @foreach($expenseTypesNp as $expenseTypeNp)
-                                        <tr>
-                                            <td style="padding-left:18px">
-                                                <h4>
-                                                    <a href="javascript:void(0)"><strong>{{$expenseTypeNp->lable}}</strong></a><br>
-                                                    <small></small>
-                                                </h4>
-                                            </td>
-                                            <td class="text-center "><a
-                                                        href="javascript:void(0)">{{number_format(\App\Helpers\GeneralHelper::getExpenseAll($expenseTypeNp->value))}}</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                <tr>
-                                    <td style="padding-left:18px">
-                                        <h4>
-                                            <a href="javascript:void(0)"><strong>Total Outflows&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></a><br>
-                                            <small></small>
-                                        </h4>
-                                    </td>
-                                    <td class="text-center "><a
-                                                href="javascript:void(0)">{{number_format($netCashOutflow)}}</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="border: solid 0;border-style: none solid solid none;">&nbsp;</td>
-                                    <td style="border: 0;border-style: none solid solid none;">&nbsp;</td>
-                                </tr>
+                        <table class="display nowrap dataTable dtr-inline">
+                            <thead>
+                            </thead>
+                            <tbody style="background:lightgrey">
+                            <tr>
+                                <td colspan="2" >&nbsp;</td>
+                                <td class="text-right" scope="col">Amount $</td>
+                            </tr>
+                            <tr style="background-image: linear-gradient(90deg, #090979 0%, #090979 35%, #00d4ff 100%); color:white">
+                                <td colspan="2"><strong style="font-weight:bold; font-size: x-large">Cash in Hand as on</strong>&nbsp;&nbsp;<strong style="font-weight:bolder; font-size:x-large">{{date('m/d/Y', strtotime($date1))}}</strong></td>
+                                <td class="text-right" style="font-weight: bold">{{number_format($cashInPutPre)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="display nowrap dataTable dtr-inline">
+                            <thead style="background:#e7e7e7">
+                            <tr>
+                                <th scope="col">Inflows</th>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2"><strong>Sales</strong></td>
+                                <td class="text-right">{{number_format($sales)}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Cash input</strong></td>
+                                <td class="text-right">{{number_format($cashInPut)}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong style="font-weight: bold">Total Inflows</strong></td>
+                                <td class="text-right" style="font-weight: bold">{{number_format($grossCashInflow)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="display nowrap dataTable dtr-inline">
+                            <thead style="background:#e7e7e7">
+                            <tr>
+                                <th scope="col">Outflows</th>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2"> <strong>Purchases</strong></td>
+                                <td class="text-right">{{number_format($purchases)}}</td>
+                            </tr>
+                            @if(!empty($expenseTypesNp) && $expenseTypesNp!=null)
+                                @foreach($expenseTypesNp as $expenseTypeNp)
+                                    <tr>
+                                        <td colspan="2"><strong>{{$expenseTypeNp->lable}}</strong></td>
+                                        <td class="text-right">{{number_format(\App\Helpers\GeneralHelper::getExpenseAll($expenseTypeNp->value))}}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            <tr>
+                                <td colspan="2"><strong style="font-weight: bold">Total Outflows</strong></td>
+                                <td class="text-right" style="font-weight: bold">{{number_format($netCashOutflow)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="display nowrap dataTable dtr-inline">
+                            <thead>
 
-                                <tr style="margin-top: 10px!important;">
-                                    <td>
-                                        <h4>
-                                            <a href="javascript:void(0)" style="font-size:large;color:black"><strong>Cash
-                                                    in Hand as on {{date('d-m-y', strtotime($date2))}}
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></a><br>
-                                        </h4>
-                                    </td>
-                                    <td class="text-center"><a
-                                                href="javascript:void(0)"
-                                                style="color: black!important;font-weight:bold">{{number_format(($cashInPutPre+$grossCashInflow)-$netCashOutflow)}}</a>
-                                    </td>
-                                </tr>
-
-                                </tbody>
-                            </table>
-                        </div>&nbsp;
-                        <hr style="border-top:3px solid red">
+                            </thead>
+                            <tbody style="background:lightgrey">
+                            <tr style="background-image: linear-gradient(90deg, #020051 0%, #090979 35%, #00d4ff 100%); color:white">
+                                <td colspan="2"><strong style="font-weight:bold; font-size: x-large">Cash in Hand as on</strong>&nbsp;&nbsp;<strong style="font-weight:bolder; font-size:x-large">{{date('m/d/Y', strtotime($date2))}}</strong></td>
+                                <td class="text-right" style="font-weight: bold">{{number_format(($cashInPutPre+$grossCashInflow)-$netCashOutflow)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
