@@ -278,12 +278,12 @@
                 </ul>
                 <!-- END Left Header Navigation -->
                 <!-- Search Form -->
-                <form action="javascript:void(0)" method="post" class="navbar-form-custom">
-                    <div class="form-group">
-                        <input type="text" id="top-search" name="top-search" class="form-control"
-                               placeholder="Search..">
-                    </div>
-                </form>
+                {{--<form action="javascript:void(0)" method="post" class="navbar-form-custom">--}}
+                    {{--<div class="form-group">--}}
+                        {{--<input type="text" id="top-search" name="top-search" class="form-control"--}}
+                               {{--placeholder="Search..">--}}
+                    {{--</div>--}}
+                {{--</form>--}}
 
                 <!-- Right Header Navigation -->
                 <ul class="nav navbar-nav-custom pull-right">
