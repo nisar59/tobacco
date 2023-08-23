@@ -55,7 +55,7 @@
                                             @if(count($data['user']->roles)>0 && $data['user']->roles[0]->name=='super-admin')
                                                 <div class="form-group col-md-6">
                                                     <label>Role</label>
-                                                    <select class="form-control" disabled>
+                                                    <select class="form-control" disabled  name="role">
                                                         <option value="">Super admin</option>
                                                     </select>
                                                 </div>

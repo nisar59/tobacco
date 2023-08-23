@@ -10,7 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Tobacco') }}</title>
 
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -20,7 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- START Icons -->
-    <link rel="shortcut icon" href="{{ asset('backend/img/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('backend/icons/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('backend/img/icon57.png') }}" sizes="57x57">
     <link rel="apple-touch-icon" href="{{ asset('backend/img/icon72.png') }}" sizes="72x72">
     <link rel="apple-touch-icon" href="{{ asset('backend/img/icon76.png') }}" sizes="76x76">
