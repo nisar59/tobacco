@@ -16,6 +16,20 @@
                 @if(isset($model) && !empty($model->id)) <input type="hidden" id="product_id" name="id" value="{{$model->id}}"> @else @endif
 
                 <div class="form-group has-success">
+                    <label class="col-md-4 control-label" for="example-text-input3-uuid">Product Code</label>
+                    <div class="col-md-6">
+                        <input type="text" id="example-text-input3-uuid" name="uuid" class="form-control"
+                               placeholder="Please enter Product Code" data-toggle="tooltip"
+                               value="{{old('uuid',$model->uuid)}}"
+                               title="Product Code!" required="required">
+                        @if($errors->has('uuid'))
+                            <div class="invalid-feedback">
+                                <strong>{{ $errors->first('uuid') }}</strong>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group has-success">
                     <label class="col-md-4 control-label" for="val_skill_manufacturer">Manufacturer</label>
                     <div class="col-md-6">
                         <select id="val_skill_manufacturer" name="manufacturer" class="form-control"
