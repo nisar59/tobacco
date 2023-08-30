@@ -49,12 +49,12 @@
                                     <input type="date" id="example-text-input2-exp_date" name="exp_date" class="form-control"
                                            placeholder="Please enter configuration name" data-toggle="tooltip"
                                            value="{{old('exp_date',date('Y-m-d',strtotime($model->exp_date)))}}"
-                                           title="Cash Date!">
+                                           title="Cash Date!" required="required">
                                 @else
                                     <input type="date" id="example-text-input2-exp_date" name="exp_date" class="form-control"
                                            placeholder="Please enter configuration name" data-toggle="tooltip"
                                            value=""
-                                           title="Cash Date!">
+                                           title="Cash Date!" required="required">
                                 @endif
                                 @if($errors->has('exp_date'))
                                     <div class="invalid-feedback">

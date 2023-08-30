@@ -202,8 +202,11 @@ class SaleOrderController extends Controller
             }
 
         } catch (\Exception $e) {
-            session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
+            echo '<pre>';
+            print_r($e->getMessage());
+            session()->flash('app_error', 'Something went wrong, please contact admin!');
             DB::rollback();
+            die();
         }
 
         return redirect()->back();

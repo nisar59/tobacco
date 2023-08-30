@@ -37,7 +37,7 @@ class HomeController extends Controller
             $start = $req->start;
             $length = $req->length;
 
-            $product = Product::where('deleted', 0);
+            $product = Product::where('deleted', 0)->where('status',1);
 
             if ($req->name != null) {
                 $product->where('name', $req->name);
