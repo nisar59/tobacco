@@ -202,11 +202,8 @@ class SaleOrderController extends Controller
             }
 
         } catch (\Exception $e) {
-            echo '<pre>';
-            print_r($e->getMessage());
             session()->flash('app_error', 'Something went wrong, please contact admin!');
             DB::rollback();
-            die();
         }
 
         return redirect()->back();

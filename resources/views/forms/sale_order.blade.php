@@ -1,5 +1,21 @@
 <div class="row">
     <div class="col-md-12">
+        <div class="content-header">
+            <div class="header-section">
+                @if( Session::has("app_message") )
+                    <div class="alert alert-success alert-block" role="alert">
+                        <button class="close" data-dismiss="alert"></button>
+                        {{ Session::get("app_message") }}
+                    </div>
+                @endif
+                @if( Session::has("app_error") )
+                    <div class="alert alert-danger alert-block" role="alert">
+                        <button class="close" data-dismiss="alert"></button>
+                        {{ Session::get("app_error") }}
+                    </div>
+                @endif
+            </div>
+        </div>
         <!-- User Assist Block -->
         <div class="block full">
             <!-- Invoice Title -->

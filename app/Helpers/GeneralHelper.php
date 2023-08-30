@@ -119,6 +119,7 @@ class GeneralHelper
                 } else {
                     $stockModel->closing_stock = ((int)$stockModel->opening_stock + (int)$stockModel->purchase) - (int)$stockModel->sale;
                     $stockModel->closing_stock_amount = ((int)$stockModel->opening_stock_amount + (int)$stockModel->purchase_amount) - (int)$stockModel->sale_amount;
+                    $stockModel->report_date = date('Y-m-d');
                     if ($stockModel->save()) {
                         self::openingStockNextDate($stockModel);
                         foreach ($purchaseDetails as $detail) {
@@ -202,6 +203,7 @@ class GeneralHelper
             $stockModel = new StockManagement();
             $stockModel->sale += (int)$pQty;
             $stockModel->sale_amount += (int)str_replace(',', '', $amount);
+            $stockModel->report_date = date('Y-m-d');
             if (!$stockModel->save()) {
                 return false;
             } else {
