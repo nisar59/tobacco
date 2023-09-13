@@ -38,7 +38,7 @@
                                     @foreach($customers as $customer)
                                         <option @if($customer->customer_id == $selected_customer_id) selected
                                                 @endif value="{{$customer->id}}"><strong>Customer
-                                                Name:</strong> {{$customer->customer_name}} &nbsp;&nbsp;&nbsp; <strong>Receivables:</strong> {{$customer->diff_amount}}
+                                                Name: </strong> {{$customer->customer_name}} &nbsp;&nbsp;&nbsp; <strong>Receivables: $</strong> {{$customer->diff_amount}}
                                         </option>
                                     @endforeach
                                 </select>

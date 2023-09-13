@@ -38,7 +38,8 @@
                                     @foreach($suppliers as $supplier)
                                         <option @if($supplier->supplier_id == $selected_supplier_id) selected
                                                 @endif value="{{$supplier->id}}"><strong>Supplier
-                                                Name: </strong>{{$supplier->supplier_name}} &nbsp;&nbsp;&nbsp; <strong>Payable: </strong> {{$supplier->diff_amount}}
+                                                Name: </strong>{{$supplier->supplier_name}} &nbsp;&nbsp;&nbsp; <strong>Payable:
+                                                $</strong> {{$supplier->diff_amount}}
                                         </option>
                                     @endforeach
                                 </select>
