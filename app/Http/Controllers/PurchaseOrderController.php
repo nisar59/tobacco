@@ -3,20 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\GeneralHelper;
+use App\Helpers\PaymentHelper;
+use App\Models\Expense;
 use App\Models\Product;
 use App\Models\PurchaseOrderDetail;
 use App\Models\Supplier;
+use App\Models\SupplierPayment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\PurchaseOrder;
-use App\Http\Requests\PurchaseOrders\Index;
-use App\Http\Requests\PurchaseOrders\Show;
 use App\Http\Requests\PurchaseOrders\Create;
-use App\Http\Requests\PurchaseOrders\Store;
 use App\Http\Requests\PurchaseOrders\Edit;
-use App\Http\Requests\PurchaseOrders\Update;
-use App\Http\Requests\PurchaseOrders\Destroy;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +38,7 @@ class PurchaseOrderController extends Controller
             $strt = $req->start;
             $length = $req->length;
 
-            $model = PurchaseOrder::whereIn('status', [0,1]);
+            $model = PurchaseOrder::where('status', 1);
 
             if ($req->supplier_id != null) {
                 $model->where('supplier_id', $req->supplier_id);
@@ -93,20 +90,8 @@ class PurchaseOrderController extends Controller
                         <i class="fa fa-eye"></i>
                         </a>
                     </div>
-                    <div style="display: none" class="btn-group btn-group-xs">
-                        <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Update status" href="' . url('/purchase/status/update/' . $row->id.'/'.$row->status) . '" class="btn btn-default" style="
-                                height: 36px;
-                                width: 36px;
-                                text-align: center;
-                                padding: 8px;
-                                background-color: white;
-                                color: red;
-                                margin-right: 5px;">
-                        <i class="fa fa-paper-plane"></i>
-                        </a>
-                    </div>
-                    <div style="display: none" class="btn-group btn-group-xs">
-                        <button data-toggle="modal" data-target="#edit-modal" data-id="'.$row->id.'" data-bs-placement="bottom" title="Purchase Return" class="btn btn-warning btn-detail open_modal" style="
+                    <div class="btn-group btn-group-xs">
+                        <a href="' . url('/purchase/return/' . $row->id) . '" class="btn btn-default" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Returns" style="
                                 height: 36px;
                                 width: 36px;
                                 text-align: center;
@@ -115,7 +100,7 @@ class PurchaseOrderController extends Controller
                                 color: red;
                                 margin-right: 5px;">
                         <i class="fa fa-undo"></i>
-                        </button>
+                        </a>
                     </div>
                  ';
                 })
@@ -140,6 +125,56 @@ class PurchaseOrderController extends Controller
             ->get();
 
         return view('pages.purchase_orders.index', ['suppliers' => $suppliers]);
+    }
+
+    public function indexPayable(Request $req)
+    {
+        if ($req->ajax()) {
+
+            $strt = $req->start;
+            $length = $req->length;
+
+            $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
+            ->where('supplier_payments.diff_amount','>',0);
+
+            if ($req->supplier_name != null) {
+                $supplier->where('suppliers.supplier_name', $req->supplier_name);
+            }
+
+
+            $total = $supplier->count();
+            $supplier = $supplier->select('suppliers.*','supplier_payments.diff_amount')
+                ->offset($strt)
+                ->limit($length)
+                ->get();
+
+            return DataTables::of($supplier)
+                ->setOffset($strt)
+                ->with([
+                    "recordsTotal" => $total,
+                    "recordsFiltered" => $total,
+                ])
+                ->addColumn('action', function ($row) {
+                    return '
+                    <div class="btn-group btn-group-xs">
+                        <a href="' . url('/purchase/payment/' . $row->id) . '" class="btn btn-default" style="
+                                height: 36px;
+                                width: 130px;
+                                text-align: center;
+                                padding: 8px;
+                                background-color: white;
+                                color: red;
+                                margin-right: 5px;">
+                        Make New Payment
+                        </a>
+                    </div>
+                 ';
+                })
+                ->make(true);
+        }
+
+
+        return view('pages.purchase_orders.index_payable');
     }
 
     /*
@@ -201,21 +236,27 @@ class PurchaseOrderController extends Controller
 //            return redirect()->back();
 //        }
 
-        if(isset($request->image) && !empty($request->image)){
+        if (isset($request->image) && !empty($request->image)) {
             $photoName = time() . '.' . $request->image->getClientOriginalExtension();
             $request->image->move(public_path('invoices'), $photoName);
             $model->image = $photoName;
-        }else{
+        } else {
             $model->image = '';
         }
 
-        $model->user_id = Auth::user()->id;
-        $model->invoice_price = (int)str_replace( ',', '', $request->order_total );
         $model->status = 1;
+        $model->user_id = Auth::user()->id;
+        $model->invoice_price = (int)str_replace(',', '', $request->order_total);
 
         DB::beginTransaction();
         try {
             if ($model->save()) {
+                $supplierPayments = PaymentHelper::supplierPurchase($model->supplier_id);
+                if($supplierPayments == false){
+                    session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
+                    DB::rollback();
+                }
+
                 if (isset($request->p_id) && !empty($request->p_id)) {
                     $pdArr = [];
                     foreach ($request->p_id as $key => $pid) {
@@ -232,14 +273,14 @@ class PurchaseOrderController extends Controller
                     $product = Product::where('id', $p['product_id'])->first();
                     if (!empty($product) && $product != null) {
                         $product->stock_in_hand += $p['quantity'];
-                        $product->unit_price    = $p['unit_price'];
+                        $product->unit_price = $p['unit_price'];
                         $product->save();
                     }
                 }
 
                 DB::commit();
                 session()->flash('app_message', 'PurchaseOrder saved successfully');
-                return redirect()->to('purchase/index');
+                return redirect()->to('purchase/payable');
             }
 
         } catch (\Exception $e) {
@@ -302,21 +343,30 @@ class PurchaseOrderController extends Controller
             $model->image = $photoName;
         }
 
-        $model->order_date = $request->order_date_old;
+        if(!isset($model->order_date)){
+            $model->order_date = $request->order_date_old;
+        }
         $model->user_id = Auth::user()->id;
-        $model->invoice_price = (int)str_replace( ',', '', $request->order_total );
+        $model->invoice_price = (int)str_replace(',', '', $request->order_total);
 
         DB::beginTransaction();
         try {
             $stockUpdate = GeneralHelper::stockPurchases($request->purchase_id);
-            if($stockUpdate){
+            if ($stockUpdate) {
                 if ($model->save()) {
+
+                    $supplierPayments = PaymentHelper::supplierPurchase($model->supplier_id);
+                    if($supplierPayments == false){
+                        session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
+                        DB::rollback();
+                    }
+
                     if (isset($request->p_id) && !empty($request->p_id)) {
                         $responseData = PurchaseOrderDetail::where('purchase_order_id', $request->purchase_id)->get();
                         foreach ($responseData as $res) {
-                            DB::delete('delete from purchase_order_details where id = ?',[$res->id]);
-                            $product = Product::where('id',$res->product_id)->first();
-                            if(!empty($product) && $product!=null){
+                            DB::delete('delete from purchase_order_details where id = ?', [$res->id]);
+                            $product = Product::where('id', $res->product_id)->first();
+                            if (!empty($product) && $product != null) {
                                 $product->stock_in_hand -= $res->quantity;
                                 $product->save();
                             }
@@ -333,7 +383,7 @@ class PurchaseOrderController extends Controller
                         foreach ($pdArr as $p) {
                             $product = Product::where('id', $p['product_id'])->first();
                             if (!empty($product) && $product != null) {
-                                $product->unit_price    = $p['unit_price'];
+                                $product->unit_price = $p['unit_price'];
                                 $product->stock_in_hand += $p['quantity'];
                                 $product->save();
                             }
@@ -362,9 +412,9 @@ class PurchaseOrderController extends Controller
     {
         $responseData = PurchaseOrderDetail::where('purchase_order_id', $request->id)->get();
         foreach ($responseData as $res) {
-            DB::delete('delete from purchase_order_details where id = ?',[$res->id]);
+            DB::delete('delete from purchase_order_details where id = ?', [$res->id]);
         }
-        if (PurchaseOrder::where('id',$request->id)->delete()) {
+        if (PurchaseOrder::where('id', $request->id)->delete()) {
             session()->flash('app_message', 'PurchaseOrder successfully deleted');
         } else {
             session()->flash('app_error', 'Error occurred while deleting PurchaseOrder');
@@ -379,41 +429,71 @@ class PurchaseOrderController extends Controller
         return response()->json($model);
     }
 
+
     public function fetchProduct(Request $request)
     {
         $model = Product::where('id', $request->id)->first();
         return response()->json($model);
     }
 
-    public function updateStatus($id,$status){
-        $status = ($status == 1)?0:1;
+
+    public function formPayment($id)
+    {
+        $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
+            ->where('supplier_payments.diff_amount','>',0)->get();
+
+        return view('pages.purchase_orders.payment_form', [
+            'model' => new Expense(),
+            'selected_supplier_id' => $id,
+            'suppliers' => $supplier
+
+        ]);
+
+    }
+
+    public function PayableStore(Request $request)
+    {
+
+        $validation = Validator::make($request->all(), [
+            'attachment_file' => 'dimensions:min_width=650,min_height=430'
+        ]);
+
+        if($validation->fails()){
+            session()->flash('app_error', 'attachment file should min size of 750*500');
+            return redirect()->back();
+        }
+
+        $model = new Expense;
+        $model->fill($request->all());
+        if(isset($request->attachment_file) && !empty($request->attachment_file)){
+            $photoName = time() . '.' . $request->attachment_file->getClientOriginalExtension();
+            $model->attachment_file = $photoName;
+            $request->attachment_file->move(public_path('invoices'), $photoName);
+        }else{
+            $model->attachment_file = '';
+        }
+        $model->correspondent_id = $request->supplier_id;
+
         DB::beginTransaction();
         try {
-            if($status == 1){
-                $stockUpdate = GeneralHelper::stockPurchases($id);
-                if($stockUpdate){
-                    DB::table('purchase_orders')
-                        ->where('id', $id)
-                        ->update(['status' => $status]);
-                }
-            }else{
-                $stockUpdate = GeneralHelper::stockPurchasesReverse($id);
-                if($stockUpdate){
-                    DB::table('purchase_orders')
-                        ->where('id', $id)
-                        ->update(['status' => $status]);
+            if($model->save()){
+                $result = PaymentHelper::supplierPurchasePayment($request->supplier_id);
+                if($result == true){
+                    DB::commit();
+                    session()->flash('app_message', 'Payment added successfully');
+                    return redirect()->to('purchase/payable');
                 }
             }
-            DB::commit();
-            session()->flash('app_message', 'PurchaseOrder Updated successfully');
         } catch (\Exception $e) {
-            session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
+            session()->flash('app_error', 'Something went wrong, please contact admin');
             DB::rollback();
         }
+
         return redirect()->back();
     }
 
-    public function getReturnOrder($id){
+    public function getReturnOrder($id)
+    {
         $responseData = PurchaseOrderDetail::where('purchase_order_id', $id)->first();
 
         return json_encode($responseData);

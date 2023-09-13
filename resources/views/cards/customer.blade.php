@@ -2,16 +2,11 @@
 <div class="content-header">
     <div class="header-section">
         <h1>
-            <i class="fa fa-ticket"></i>Customer's<br>
+            <i class="fa fa-ticket"></i>Customer<br>
             <small>Detail Ledger!</small>
         </h1>
     </div>
 </div>
-<ul class="breadcrumb breadcrumb-top">
-    <li><a href="{{url('/')}}">Home</a></li>
-    <li class="active"><a href="{{url('customer/index')}}">Customer's</a></li>
-    <li class="active">Ledger</li>
-</ul>
 <!-- END Tickets Header -->
 
 <!-- Tickets Content -->
@@ -21,7 +16,7 @@
         <div class="block full">
             <!-- Menu Title -->
             <div class="block-title clearfix">
-                <h2><i class="fa fa-user"></i> Customer's <strong>Info</strong></h2>
+                <h2><i class="fa fa-user"></i> Customer <strong>Info</strong></h2>
             </div>
             <!-- END Menu Title -->
 

@@ -158,7 +158,7 @@
                         data: 'invoice_price', name: 'invoice_price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                             const numberFormatter = Intl.NumberFormat('en-US');
                             const formatted = numberFormatter.format(oData.invoice_price);
-                            var isnew = '<span class="" style="margin-left: 2em">'+formatted+'</span>';
+                            var isnew = '<span class="" style="margin-left: 2em">$ '+formatted+'</span>';
                             $(nTd).html(isnew);
                         }
                     },

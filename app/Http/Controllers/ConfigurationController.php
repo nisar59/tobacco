@@ -191,9 +191,9 @@ class ConfigurationController extends Controller
             $date2 = date('Y-m-d');
         }
 
-        $purchases = PurchaseOrder::where('status', 1)->where('order_date', '>=', $date1)->where('order_date', '<=', $date2)->sum('invoice_price');
+        $purchases = PurchaseOrder::where('status', 1)->where('order_date', '>=', $date1)->where('order_date', '<=', $date2)->sum('paid_amount');
 //        -----------------------------------------------------
-        $sales = SaleOrder::where('status', 1)->where('sale_date', '>=', $date1)->where('sale_date', '<=', $date2)->sum('invoice_price');
+        $sales = SaleOrder::where('status', 1)->where('sale_date', '>=', $date1)->where('sale_date', '<=', $date2)->sum('received_amount');
 //        -------------------------------------------------------
 
         $cashInPut = DB::table('expenses')

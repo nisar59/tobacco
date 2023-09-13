@@ -26,6 +26,7 @@ class Expense extends Model
     * Mass assignable columns
     */
     protected $fillable=['type',
+'correspondent_id',
 'exp_date',
 'payment_mode',
 'amount',

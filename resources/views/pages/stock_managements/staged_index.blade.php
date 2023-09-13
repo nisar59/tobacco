@@ -9,10 +9,6 @@
             </h1>
         </div>
     </div>
-    <ul class="breadcrumb breadcrumb-top">
-        <li><a href="{{url('/')}}">Home</a></li>
-        <li class="active"><a href="{{url('config/stock')}}">Stock Management</a></li>
-    </ul>
 
     <!-- All stock Block -->
 

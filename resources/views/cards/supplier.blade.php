@@ -2,16 +2,11 @@
 <div class="content-header">
     <div class="header-section">
         <h1>
-            <i class="fa fa-ticket"></i>Supplier's<br>
+            <i class="fa fa-ticket"></i>Supplier<br>
             <small>Detail Ledger!</small>
         </h1>
     </div>
 </div>
-<ul class="breadcrumb breadcrumb-top">
-    <li><a href="{{url('/')}}">Home</a></li>
-    <li class="active"><a href="{{url('supplier/index')}}">Suppliers</a></li>
-    <li class="active">Ledger</li>
-</ul>
 <!-- END Tickets Header -->
 
 <!-- Tickets Content -->
@@ -22,7 +17,7 @@
             <!-- Menu Title -->
             <div class="block-title clearfix">
 
-                <h2><i class="fa fa-user"></i> Supplier's <strong>Info</strong></h2>
+                <h2><i class="fa fa-user"></i> Supplier <strong>Info</strong></h2>
             </div>
             <!-- END Menu Title -->
 

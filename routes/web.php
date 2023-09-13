@@ -91,8 +91,12 @@ Route::group(['prefix'=>'purchase','middleware' => ['permission:purchases.view']
     Route::post('destroy', [App\Http\Controllers\PurchaseOrderController::class, 'destroy'])->middleware('permission:purchases.delete');
     Route::post('supplier', [App\Http\Controllers\PurchaseOrderController::class, 'fetchSupplier'])->middleware('permission:purchases.supplier');
     Route::post('product', [App\Http\Controllers\PurchaseOrderController::class, 'fetchProduct'])->middleware('permission:purchases.product');
-    Route::get('status/update/{id}/{status}', [App\Http\Controllers\PurchaseOrderController::class, 'updateStatus'])->middleware('permission:purchases.edit');
     Route::get('return/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'getReturnOrder'])->middleware('permission:purchases.view');
+    Route::get('payable', [App\Http\Controllers\PurchaseOrderController::class, 'indexPayable'])->middleware('permission:purchases.payable');
+    Route::get('payment/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'formPayment'])->middleware('permission:purchases.payable');
+    Route::post('payable/save', [App\Http\Controllers\PurchaseOrderController::class, 'PayableStore'])->middleware('permission:purchases.payable_store');
+    Route::get('return/{id}', [App\Http\Controllers\PurchaseReturnController::class, 'index'])->middleware('permission:sales.return');
+    Route::post('return/save', [App\Http\Controllers\PurchaseReturnController::class, 'store'])->middleware('permission:sales.return');
 });
 
 Route::group(['prefix'=>'sales','middleware' => ['permission:sales.view']], function(){
@@ -105,6 +109,11 @@ Route::group(['prefix'=>'sales','middleware' => ['permission:sales.view']], func
     Route::post('destroy', [App\Http\Controllers\SaleOrderController::class, 'destroy'])->middleware('permission:sales.delete');
     Route::post('customer', [App\Http\Controllers\SaleOrderController::class, 'fetchCustomer'])->middleware('permission:sales.customer');
     Route::post('product', [App\Http\Controllers\SaleOrderController::class, 'fetchProduct'])->middleware('permission:sales.product');
+    Route::get('receivable', [App\Http\Controllers\SaleOrderController::class, 'indexReceivable'])->middleware('permission:purchases.receivable');
+    Route::get('receipts/{id}', [App\Http\Controllers\SaleOrderController::class, 'formReceipt'])->middleware('permission:sales.receivable');
+    Route::post('receivable/save', [App\Http\Controllers\SaleOrderController::class, 'ReceivableStore'])->middleware('permission:purchases.receivable_store');
+    Route::get('return/{id}', [App\Http\Controllers\SaleReturnController::class, 'index'])->middleware('permission:sales.return');
+    Route::post('return/save', [App\Http\Controllers\SaleReturnController::class, 'store'])->middleware('permission:sales.return');
 });
 
 Route::group(['prefix'=>'report','middleware' => ['permission:reports.view']], function(){

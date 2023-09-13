@@ -11,10 +11,7 @@
                         </h1>
                     </div>
                 </div>
-                <ul class="breadcrumb breadcrumb-top">
-                    <li><a href="{{url('/')}}">Home</a></li>
-                    <li class="active"><a href="{{url('config/stock')}}">Product wise Stock</a></li>
-                </ul>
+
                 @if( Session::has("app_message") )
                     <div class="alert alert-success alert-block" role="alert">
                         <button class="close" data-dismiss="alert"></button>

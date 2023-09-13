@@ -30,6 +30,8 @@ class PurchaseOrder extends Model
 'order_date',
 'invoice_number',
 'invoice_price',
+'paid_amount',
+'payment_method',
 'image',
 'status'];
 

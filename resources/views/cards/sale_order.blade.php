@@ -1,11 +1,4 @@
 <div id="page-content">
-	<div class="col-md-12">
-		<ul class="breadcrumb breadcrumb-top">
-			<li><a href="{{url('/')}}">Home</a></li>
-			<li><a href="{{url('sales/index')}}">Sales</a></li>
-			<li><a href="javascript:void(0)">Invoice</a></li>
-		</ul>
-	</div><br>
 	<!-- END Invoice Header -->
 
 	<!-- Invoice Block -->
