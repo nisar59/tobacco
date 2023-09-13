@@ -32,8 +32,8 @@ class HomeController extends Controller
      */
     public function index(Request $req)
     {
-        $publishProgress = new \App\Console\Commands\Stock();
-        $publishProgress->handle();
+//        $publishProgress = new \App\Console\Commands\Stock();
+//        $publishProgress->handle();
 
         if ($req->ajax()) {
 
