@@ -75,8 +75,8 @@
                             <tr>
                                 <th>Customer Name</th>
                                 <th>Contact Number</th>
-                                <th>Receivable</th>
-                                <th>Action</th>
+                                <th>Mode</th>
+                                <th>Amount</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -115,13 +115,13 @@
                 columns: [
                     {data: 'customer_name', name: 'customer_name'},
                     {data: 'contact_number', name: 'contact_number'},
+                    {data: 'payment_mode', name: 'payment_mode'},
                     {
-                        data: 'diff_amount', name: 'diff_amount', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            var isnew = '<span class="" style="margin-left: 2em">$ '+oData.diff_amount+'</span>';
+                        data: 'amount', name: 'amount', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var isnew = '<span class="" style="margin-left: 2em">$ '+oData.amount+'</span>';
                             $(nTd).html(isnew);
                         }
-                    },
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                    }
                 ],
 
             });

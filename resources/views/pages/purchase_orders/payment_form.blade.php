@@ -32,10 +32,14 @@
 
                         <div class="col-md-12 form-group has-success">
                             <div class="col-md-10">
-                                <select id="val_skill_supplier_id" name="supplier_id" class="form-control  supplier-filters" required="required">
+                                <select id="val_skill_supplier_id" name="supplier_id"
+                                        class="form-control supplier-filters" required="required">
                                     <option value="">Select Supplier</option>
                                     @foreach($suppliers as $supplier)
-                                        <option @if($supplier->supplier_id == $selected_supplier_id) selected @endif value="{{$supplier->id}}"><strong>Supplier Name:</strong>{{$supplier->supplier_name}} &nbsp;&nbsp;&nbsp; <strong>Payable:</strong> {{$supplier->diff_amount}}</option>
+                                        <option @if($supplier->supplier_id == $selected_supplier_id) selected
+                                                @endif value="{{$supplier->id}}"><strong>Supplier
+                                                Name: </strong>{{$supplier->supplier_name}} &nbsp;&nbsp;&nbsp; <strong>Payable: </strong> {{$supplier->diff_amount}}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -58,12 +62,14 @@
                             <label class="col-md-3 control-label" for="example-text-input2">Payment Date</label>
                             <div class="col-md-9">
                                 @if(isset($model) && !empty($model->exp_date))
-                                    <input type="date" id="example-text-input2-exp_date" name="exp_date" class="form-control"
+                                    <input type="date" id="example-text-input2-exp_date" name="exp_date"
+                                           class="form-control"
                                            placeholder="Please enter configuration name" data-toggle="tooltip"
                                            value="{{old('exp_date',date('Y-m-d',strtotime($model->exp_date)))}}"
                                            title="Payment Date!" required="required">
                                 @else
-                                    <input type="date" id="example-text-input2-exp_date" name="exp_date" class="form-control"
+                                    <input type="date" id="example-text-input2-exp_date" name="exp_date"
+                                           class="form-control"
                                            placeholder="Please enter configuration name" data-toggle="tooltip"
                                            value=""
                                            title="Payment Date!" required="required">
@@ -125,19 +131,24 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
-                            <label class="col-md-3 control-label" for="val_skill_attachment_file">File Attachment</label>
+                            <label class="col-md-3 control-label" for="val_skill_attachment_file">File
+                                Attachment</label>
                             <div class="col-md-9">
-                                <input type="file" id="val_skill_attachment_file" name="attachment_file" class="form-control"
+                                <input type="file" id="val_skill_attachment_file" name="attachment_file"
+                                       class="form-control"
                                        placeholder="Attachment File" data-toggle="tooltip"
                                        value="{{old('attachment_file',$model->attachment_file)}}"
                                        title="Attachment File!">
-                                @if(isset($model) && !empty($model->attachment_file)) <input type="hidden" name="old_attachment_file" value="{{$model->attachment_file}}"> @endif
+                                @if(isset($model) && !empty($model->attachment_file)) <input type="hidden"
+                                                                                             name="old_attachment_file"
+                                                                                             value="{{$model->attachment_file}}"> @endif
                             </div>
                         </div>
 
                         <div class="form-group form-actions">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Save
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i>
+                                    Save
                                 </button>
                             </div>
                         </div>

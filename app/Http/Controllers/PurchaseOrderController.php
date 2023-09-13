@@ -134,8 +134,12 @@ class PurchaseOrderController extends Controller
             $strt = $req->start;
             $length = $req->length;
 
-            $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
-            ->where('supplier_payments.diff_amount','>',0);
+//            $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
+//            ->where('supplier_payments.diff_amount','>',0);
+
+            $supplier = Supplier::join('expenses', 'expenses.correspondent_id', '=', 'suppliers.id')
+                ->where('expenses.type','purchase_payment')
+                ->where('expenses.deleted',0);
 
             if ($req->supplier_name != null) {
                 $supplier->where('suppliers.supplier_name', $req->supplier_name);
@@ -143,7 +147,7 @@ class PurchaseOrderController extends Controller
 
 
             $total = $supplier->count();
-            $supplier = $supplier->select('suppliers.*','supplier_payments.diff_amount')
+            $supplier = $supplier->select('suppliers.*','expenses.amount','expenses.payment_mode')
                 ->offset($strt)
                 ->limit($length)
                 ->get();
@@ -154,22 +158,22 @@ class PurchaseOrderController extends Controller
                     "recordsTotal" => $total,
                     "recordsFiltered" => $total,
                 ])
-                ->addColumn('action', function ($row) {
-                    return '
-                    <div class="btn-group btn-group-xs">
-                        <a href="' . url('/purchase/payment/' . $row->id) . '" class="btn btn-default" style="
-                                height: 36px;
-                                width: 130px;
-                                text-align: center;
-                                padding: 8px;
-                                background-color: white;
-                                color: red;
-                                margin-right: 5px;">
-                        Make New Payment
-                        </a>
-                    </div>
-                 ';
-                })
+//                ->addColumn('action', function ($row) {
+//                    return '
+//                    <div class="btn-group btn-group-xs">
+//                        <a href="' . url('/purchase/payment/' . $row->id) . '" class="btn btn-default" style="
+//                                height: 36px;
+//                                width: 130px;
+//                                text-align: center;
+//                                padding: 8px;
+//                                background-color: white;
+//                                color: red;
+//                                margin-right: 5px;">
+//                        Make New Payment
+//                        </a>
+//                    </div>
+//                 ';
+//                })
                 ->make(true);
         }
 
