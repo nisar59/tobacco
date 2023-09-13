@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\PaymentHelper;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
+use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\StockManagement;
@@ -71,6 +74,19 @@ class Stock extends Command
                     $stockModel->save();
                 }
                 $date = date("Y-m-d", strtotime("+1 day", strtotime($date)));
+            }
+        } elseif ($type == 'payment') {
+
+            $suppliers = Supplier::all();
+            foreach ($suppliers as $supplier){
+                PaymentHelper::supplierPurchase($supplier->id);
+                PaymentHelper::supplierPurchasePayment($supplier->id);
+            }
+
+            $customers = Customer::all();
+            foreach ($customers as $customer){
+                PaymentHelper::customerSales($customer->id);
+                PaymentHelper::customerSalePayment($customer->id);
             }
         }
 
