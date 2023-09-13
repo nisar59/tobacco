@@ -175,14 +175,7 @@
                                             class="sidebar-nav-mini-hide">Purchases</span></a>
                             </li>
                         @endcan
-                        @can('purchases.payable')
-                            <li>
-                                <a href="{{url('purchase/payable')}}"><i
-                                            class="fa fa-cc-amex sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Payments</span></a>
-                            </li>
-                        @endcan
-                       
+
                         @endcanany
                         @canany(['sales.view','customer.view'])
                         <li class="sidebar-header">
@@ -206,13 +199,6 @@
                                             class="sidebar-nav-mini-hide">Sales</span></a>
                             </li>
                         @endcan
-                        @can('purchases.payable')
-                            <li>
-                                <a href="{{url('sales/receivable')}}"><i
-                                            class="fa fa-hand-holding-usd sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Receipts</span></a>
-                            </li>
-                        @endcan
 
                         @endcanany
                         @canany(['cash.view','expense.view','reports.view'])
@@ -227,6 +213,20 @@
                             <li>
                                 <a href="{{url('cash/index')}}"><i class="fa fa-money sidebar-nav-icon"></i><span
                                             class="sidebar-nav-mini-hide">Cash Input</span></a>
+                            </li>
+                        @endcan
+                        @can('purchases.payable')
+                            <li>
+                                <a href="{{url('purchase/payable')}}"><i
+                                            class="fa fa-cc-amex sidebar-nav-icon"></i><span
+                                            class="sidebar-nav-mini-hide">Add Payments</span></a>
+                            </li>
+                        @endcan
+                        @can('sales.receivable')
+                            <li>
+                                <a href="{{url('sales/receivable')}}"><i
+                                            class="fa fa-hand-holding-usd sidebar-nav-icon"></i><span
+                                            class="sidebar-nav-mini-hide">Add Receipts</span></a>
                             </li>
                         @endcan
                         @can('expense.view')
