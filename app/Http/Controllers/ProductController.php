@@ -211,11 +211,7 @@ class ProductController extends Controller
     {
         $model=new Product;
         $model->fill($request->all());
-//        $a = substr($request->manufacturer, 0, 2);
-//        $b = substr($request->packing, 0, 3);
-//        $c = substr($request->flavour, 0, 2);
-//        $d = substr($request->name, 0, 2);
-//        $model->uuid = trim(strtoupper($a).'-'.strtoupper(str_replace(' ','',$b)).'-'.strtoupper($c).'-'.strtoupper($d));
+
         if ($model->save()) {
             if(isset($request->barcode) && !empty($request->barcode[0])){
                 foreach ($request->barcode as $barcode){

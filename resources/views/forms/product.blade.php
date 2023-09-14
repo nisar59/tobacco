@@ -83,9 +83,9 @@
                 </div>
 
                 <div class="form-group has-success">
-                    <label class="col-md-4 control-label" for="example-text-input3">Stock Level</label>
+                    <label class="col-md-4 control-label" for="example-min_stock_level">Stock Level</label>
                     <div class="col-md-6">
-                        <input type="text" id="example-text-input3" name="min_stock_level" class="form-control"
+                        <input oninput="stockCheck(this)" type="number" min="0" id="example-min_stock_level" name="min_stock_level" class="form-control"
                                placeholder="Please enter minimum stock level" data-toggle="tooltip"
                                value="{{old('min_stock_level',$model->min_stock_level)}}"
                                title="min stock level!">
@@ -98,9 +98,9 @@
                 </div>
 
                 <div class="form-group has-success">
-                    <label class="col-md-4 control-label" for="example-text-input3">Sales Price</label>
+                    <label class="col-md-4 control-label" for="example-sales_price">Sales Price</label>
                     <div class="col-md-6">
-                        <input type="text" id="example-text-input3" name="sales_price" class="form-control"
+                        <input oninput="check(this)" step="any" min="1" type="number" id="example-sales_price" name="sales_price" class="form-control"
                                placeholder="Please enter sales price" data-toggle="tooltip"
                                value="{{old('sales_price',$model->sales_price)}}"
                                title="Sales Price!">
@@ -198,6 +198,22 @@
             $.each(msg, function (key, value) {
                 $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
             });
+        }
+    </script>
+
+    <script>
+        function check(input) {
+            if (input.value <= '0') {
+                Swal.fire('Sales Price must b greater than 0');
+                $('#example-sales_price').val('1');
+            }
+        }
+
+        function stockCheck(input) {
+            if (input.value <= '0') {
+                Swal.fire('Stock Level must b greater than 0');
+                $('#example-min_stock_level').val('1');
+            }
         }
     </script>
 @endsection
