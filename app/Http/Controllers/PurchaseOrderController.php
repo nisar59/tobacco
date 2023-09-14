@@ -269,6 +269,8 @@ class PurchaseOrderController extends Controller
             }
 
         } catch (\Exception $e) {
+            print_r($e->getMessage());
+            die();
             session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
             DB::rollback();
         }
