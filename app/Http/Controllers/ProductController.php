@@ -199,7 +199,9 @@ class ProductController extends Controller
             'packings' => $packing
 
         ]);
-    }    /**
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  Store  $request

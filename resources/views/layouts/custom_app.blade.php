@@ -152,7 +152,7 @@
                             </li>
                         @endcan
                         @endcanany
-                        @canany(['purchases.view','supplier.view'])
+                        @canany(['purchases.view','supplier.view','returns.purchase'])
                         <li class="sidebar-header">
                             <span class="sidebar-header-options clearfix">
                                 <a href="javascript:void(0)" data-toggle="tooltip"
@@ -175,9 +175,15 @@
                                             class="sidebar-nav-mini-hide">Purchases</span></a>
                             </li>
                         @endcan
-
+                        @can('returns.purchase')
+                            <li>
+                                <a href="{{url('purchasereturns/index')}}"><i
+                                            class="fa fa-shopping-cart sidebar-nav-icon"></i><span
+                                            class="sidebar-nav-mini-hide">Returns</span></a>
+                            </li>
+                        @endcan
                         @endcanany
-                        @canany(['sales.view','customer.view'])
+                        @canany(['sales.view','customer.view','returns.sale'])
                         <li class="sidebar-header">
                             <span class="sidebar-header-options clearfix">
                                 <a href="javascript:void(0)" data-toggle="tooltip" title=""
@@ -199,7 +205,13 @@
                                             class="sidebar-nav-mini-hide">Sales</span></a>
                             </li>
                         @endcan
-
+                        @can('returns.sale')
+                            <li>
+                                <a href="{{url('salesreturns/index')}}"><i
+                                            class="fa fa-shopping-cart sidebar-nav-icon"></i><span
+                                            class="sidebar-nav-mini-hide">Returns</span></a>
+                            </li>
+                        @endcan
                         @endcanany
                         @canany(['cash.view','expense.view','reports.view'])
                         <li class="sidebar-header">

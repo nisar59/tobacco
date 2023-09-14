@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\GeneralHelper;
 use App\Models\Product;
 use App\Models\PurchaseOrderDetail;
+use App\Models\PurchaseReturn;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,34 +35,60 @@ class PurchaseReturnController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Request $req)
     {
-        $record = PurchaseOrder::where('id', $id)->first();
-        $modelDetails = PurchaseOrderDetail::where('purchase_order_id', $record->id)->get();
-        $supplier = Supplier::where('id', $record->supplier_id)->first();
 
-        return view('pages.purchase_orders.returns',
-            [
-                'record' => $record,
-                'modelDetails' => $modelDetails,
-                'supplier' => $supplier,
-            ]);
+        if ($req->ajax()) {
+
+            $strt = $req->start;
+            $length = $req->length;
+
+            $supplier = Supplier::join('purchase_returns', 'purchase_returns.supplier_id', '=', 'suppliers.id')
+                ->join('products', 'purchase_returns.product_id', '=', 'products.id')
+                ->where('purchase_returns.deleted', 0);
+
+            if ($req->supplier_name != null) {
+                $supplier->where('suppliers.supplier_name', $req->supplier_name);
+            }
+
+
+            $total = $supplier->count();
+            $supplier = $supplier->select('purchase_returns.supplier_id', 'purchase_returns.return_date', 'products.uuid', 'purchase_returns.qty', 'purchase_returns.unit_price')
+                ->offset($strt)
+                ->limit($length)
+                ->get();
+
+            return DataTables::of($supplier)
+                ->setOffset($strt)
+                ->with([
+                    "recordsTotal" => $total,
+                    "recordsFiltered" => $total,
+                ])
+                ->make(true);
+        }
+
+        return view('pages.purchase_return.index');
     }
 
-
-    /*
-     * Display the specified resource.
-     *
-     * @param  PurchaseOrder  $purchaseorder
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function create(Request $request)
     {
-        $purchaseOrder = PurchaseOrder::where('id', $id)->first();
-        return view('pages.purchase_orders.show', [
-            'record' => $purchaseOrder,
-        ]);
 
+        $suppliers = Supplier::join('purchase_orders', 'purchase_orders.supplier_id', '=', 'suppliers.id')
+            ->where('suppliers.status', 1)
+            ->select(['suppliers.id', 'suppliers.supplier_name'])
+            ->groupBy('suppliers.id','suppliers.supplier_name')
+            ->get();
+
+        $products = Product::where('deleted', 0)
+            ->where('status', 1)
+            ->get();
+
+        return view('pages.purchase_return.form', [
+            'model' => new PurchaseReturn(),
+            'suppliers' => $suppliers,
+            'products' => $products
+
+        ]);
     }
 
     /*
@@ -72,15 +99,15 @@ class PurchaseReturnController extends Controller
      */
     public function store(Request $request)
     {
-        $model = PurchaseOrderDetail::where('id', $request->purchase_id)->first();
+        $model = new PurchaseReturn();
+        $model->fill($request->all());
 
-        $model->return_qty += $request->purchase_return_qty;
         DB::beginTransaction();
         try {
             if ($model->save()) {
-                $product = Product::where('id',$model->product_id)->first();
-                if(isset($product) && !empty($product)){
-                    $product->stock_in_hand -= $request->purchase_return_qty;
+                $product = Product::where('id', $model->product_id)->first();
+                if (isset($product) && !empty($product)) {
+                    $product->stock_in_hand -= $request->qty;
                     $product->save();
                 }
                 DB::commit();
@@ -92,6 +119,6 @@ class PurchaseReturnController extends Controller
             DB::rollback();
         }
 
-        return redirect()->back();
+        return redirect()->to('purchasereturns/index');
     }
 }

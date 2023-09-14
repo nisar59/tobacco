@@ -139,9 +139,6 @@ class SaleOrderController extends Controller
             $strt = $req->start;
             $length = $req->length;
 
-//            $customer = Customer::join('customer_payments', 'customer_payments.customer_id', '=', 'customers.id')
-//                ->where('customer_payments.diff_amount','>',0);
-
             $customer = Customer::join('expenses', 'expenses.correspondent_id', '=', 'customers.id')
                 ->where('expenses.type','sale_receipts')
                 ->where('expenses.deleted',0);
@@ -163,22 +160,6 @@ class SaleOrderController extends Controller
                     "recordsTotal" => $total,
                     "recordsFiltered" => $total,
                 ])
-//                ->addColumn('action', function ($row) {
-//                    return '
-//                    <div class="btn-group btn-group-xs">
-//                        <a href="' . url('/sales/receipts/' . $row->id) . '" class="btn btn-default" style="
-//                                height: 36px;
-//                                width: 130px;
-//                                text-align: center;
-//                                padding: 8px;
-//                                background-color: white;
-//                                color: red;
-//                                margin-right: 5px;">
-//                        Make New Receiving
-//                        </a>
-//                    </div>
-//                 ';
-//                })
                 ->make(true);
         }
 

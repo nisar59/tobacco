@@ -51,25 +51,26 @@
             <!-- All Orders Title -->
             <div class="block-title">
                 <div class="block-options pull-right">
-                    <a href="{{url('/purchase/payment/0')}}" class="btn btn-alt btn-sm btn-primary" data-toggle="tooltip"
-                       title="make New Payment">Make New payment</a>
-                    <a href="{{url('purchase/payable')}}" class="btn btn-alt btn-sm btn-primary" data-toggle="tooltip"
+                    <a href="{{url('/salesreturns/create')}}" class="btn btn-alt btn-sm btn-primary" data-toggle="tooltip"
+                       title="Add Purchase Return">Add Sale Return</a>
+                    <a href="{{url('salesreturns/index')}}" class="btn btn-alt btn-sm btn-primary" data-toggle="tooltip"
                        title="Reset Filters"><i class="fa fa-refresh"></i></a>
                 </div>
-                <h2><strong>Supplier Payments</strong> List</h2>
+                <h2><strong>Sales Return</strong> List</h2>
             </div>
             <!-- END All Orders Title -->
 
             <!-- All Configuration Content -->
 
             <div class="table-responsive">
-                <table id="tobacco-supplier" class="display nowrap dataTable dtr-inline">
+                <table id="tobacco-customer" class="display nowrap dataTable dtr-inline">
                     <thead>
                     <tr>
-                        <th>Supplier Name</th>
-                        <th>Contact Number</th>
-                        <th>Mode</th>
-                        <th>Amount</th>
+                        <th>Customer Name</th>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price Per Unit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -93,26 +94,51 @@
 
         function supplier_datatable(data={}) {
             console.log(data);
-            tobacco_table = $("#tobacco-supplier").DataTable({
+            tobacco_table = $("#tobacco-customer").DataTable({
                 processing: true,
                 serverSide: true,
                 select: true,
                 paging: true,
                 bFilter: false,
                 ajax: {
-                    url: "{{ url('purchase/payable') }}",
+                    url: "{{ url('salesreturns/index') }}",
                     data: data,
                 },
                 columns: [
-                    {data: 'supplier_name', name: 'supplier_name'},
-                    {data: 'contact_number', name: 'contact_number'},
-                    {data: 'payment_mode', name: 'payment_mode'},
                     {
-                        data: 'amount', name: 'amount', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            var isnew = '<span class="" style="margin-left: 2em">$ '+oData.amount+'</span>';
+                        data: 'customer_id', name: 'customer_id', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            $.ajax({
+                                type: "POST",
+                                url: "{{url('sales/customer')}}",
+                                data: {
+                                    "_token": "{{ csrf_token() }}",
+                                    'id': oData.customer_id,
+                                },
+                                dataType: "json",
+                                success: function (responce) {
+                                    $(nTd).html('<span class="">'+responce.customer_name+'</span>');
+                                }
+                            });
+                        }
+                    },
+                    {
+                        data: 'return_date', name: 'return_date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            var toDay = new Date(oData.return_date);
+                            var isnew = '<span class="">'+toDay.toLocaleDateString("en-US", options)+'</span>';
                             $(nTd).html(isnew);
                         }
-                    }
+                    },
+                    {data: 'uuid', name: 'uuid', orderable: false, searchable: false},
+                    {data: 'qty', name: 'qty', orderable: false, searchable: false},
+                    {
+                        data: 'unit_price', name: 'unit_price', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            const numberFormatter = Intl.NumberFormat('en-US');
+                            const formatted = numberFormatter.format(oData.unit_price);
+                            var isnew = '<span class="" style="margin-left: 2em">$ '+formatted+'</span>';
+                            $(nTd).html(isnew);
+                        }
+                    },
                 ],
 
             });

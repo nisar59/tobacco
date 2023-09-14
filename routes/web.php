@@ -95,8 +95,12 @@ Route::group(['prefix'=>'purchase','middleware' => ['permission:purchases.view']
     Route::get('payable', [App\Http\Controllers\PurchaseOrderController::class, 'indexPayable'])->middleware('permission:purchases.payable');
     Route::get('payment/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'formPayment'])->middleware('permission:purchases.payable');
     Route::post('payable/save', [App\Http\Controllers\PurchaseOrderController::class, 'PayableStore'])->middleware('permission:purchases.payable_store');
-    Route::get('return/{id}', [App\Http\Controllers\PurchaseReturnController::class, 'index'])->middleware('permission:sales.return');
-    Route::post('return/save', [App\Http\Controllers\PurchaseReturnController::class, 'store'])->middleware('permission:sales.return');
+});
+
+Route::group(['prefix'=>'purchasereturns','middleware' => ['permission:returns.purchase']], function(){
+    Route::get('index', [App\Http\Controllers\PurchaseReturnController::class, 'index'])->middleware('permission:returns.purchase');
+    Route::get('create', [App\Http\Controllers\PurchaseReturnController::class, 'create'])->middleware('permission:returns.purchase_return');
+    Route::post('save', [App\Http\Controllers\PurchaseReturnController::class, 'store'])->middleware('permission:returns.purchase_return');
 });
 
 Route::group(['prefix'=>'sales','middleware' => ['permission:sales.view']], function(){
@@ -112,8 +116,12 @@ Route::group(['prefix'=>'sales','middleware' => ['permission:sales.view']], func
     Route::get('receivable', [App\Http\Controllers\SaleOrderController::class, 'indexReceivable'])->middleware('permission:purchases.receivable');
     Route::get('receipts/{id}', [App\Http\Controllers\SaleOrderController::class, 'formReceipt'])->middleware('permission:sales.receivable');
     Route::post('receivable/save', [App\Http\Controllers\SaleOrderController::class, 'ReceivableStore'])->middleware('permission:purchases.receivable_store');
-    Route::get('return/{id}', [App\Http\Controllers\SaleReturnController::class, 'index'])->middleware('permission:sales.return');
-    Route::post('return/save', [App\Http\Controllers\SaleReturnController::class, 'store'])->middleware('permission:sales.return');
+});
+
+Route::group(['prefix'=>'salesreturns','middleware' => ['permission:returns.sale']], function(){
+    Route::get('index', [App\Http\Controllers\SaleReturnController::class, 'index'])->middleware('permission:returns.sale');
+    Route::get('create', [App\Http\Controllers\SaleReturnController::class, 'create'])->middleware('permission:returns.sale_return');
+    Route::post('save', [App\Http\Controllers\SaleReturnController::class, 'store'])->middleware('permission:returns.sale_return');
 });
 
 Route::group(['prefix'=>'report','middleware' => ['permission:reports.view']], function(){

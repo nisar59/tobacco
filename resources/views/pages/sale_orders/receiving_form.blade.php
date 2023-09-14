@@ -45,19 +45,8 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
-                            <label class="col-md-3 control-label" for="val_skill_type">Input Type</label>
-                            <div class="col-md-9">
-                                <select id="val_skill_type" name="type" class="form-control" required="required">
-                                    <option value="sale_receipts">Sale Receipts</option>
-                                </select>
-                                @if($errors->has('type'))
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('type') }}</strong>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
+                        <input type="hidden" id="val_skill_type" name="type" class="form-control" value="sale_receipts">
+
                         <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
                             <label class="col-md-3 control-label" for="example-text-input2">Payment Date</label>
                             <div class="col-md-9">

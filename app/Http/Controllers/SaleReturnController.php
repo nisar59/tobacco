@@ -6,6 +6,7 @@ use App\Helpers\GeneralHelper;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\SaleOrderDetail;
+use App\Models\SaleReturn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SaleOrder;
@@ -34,29 +35,59 @@ class SaleReturnController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Request $req)
     {
-        $record       = SaleOrder::where('id', $id)->where('status', 1)->where('deleted', 0)->first();
-        $modelDetails = SaleOrderDetail::where('sale_order_id', $id)->where('deleted', 0)->get();
-        $customer     = Customer::where('id',$record->customer_id)->first();
+        if ($req->ajax()) {
 
-        return view('pages.sale_orders.returns',
-            [
-                'record'=>$record,
-                'modelDetails'=>$modelDetails,
-                'customer'=>$customer,
+            $strt = $req->start;
+            $length = $req->length;
 
-            ]);
+            $customers = Customer::join('sale_returns', 'sale_returns.customer_id', '=', 'customers.id')
+                ->join('products', 'sale_returns.product_id', '=', 'products.id')
+                ->where('sale_returns.deleted', 0);
+
+            if ($req->customer_name != null) {
+                $customers->where('customers.customer_name', $req->customer_name);
+            }
+
+
+            $total = $customers->count();
+            $customers = $customers->select('sale_returns.customer_id', 'sale_returns.return_date', 'products.uuid', 'sale_returns.qty', 'sale_returns.unit_price')
+                ->offset($strt)
+                ->limit($length)
+                ->get();
+
+            return DataTables::of($customers)
+                ->setOffset($strt)
+                ->with([
+                    "recordsTotal" => $total,
+                    "recordsFiltered" => $total,
+                ])
+                ->make(true);
+        }
+
+        return view('pages.sale_return.index');
     }
 
-
-    public function show($id)
+    public function create(Request $request)
     {
-        $saleorder = SaleOrder::where('id',$id)->first();
-        return view('pages.sale_orders.show', [
-                'record' =>$saleorder,
-        ]);
 
+        $customers = Customer::join('sale_orders', 'sale_orders.customer_id', '=', 'customers.id')
+            ->where('customers.status', 1)
+            ->select(['customers.id', 'customers.customer_name'])
+            ->groupBy('customers.id','customers.customer_name')
+            ->get();
+
+        $products = Product::where('deleted', 0)
+            ->where('status', 1)
+            ->get();
+
+        return view('pages.sale_return.form', [
+            'model' => new SaleReturn(),
+            'customers' => $customers,
+            'products' => $products
+
+        ]);
     }
 
     /*
@@ -66,15 +97,15 @@ class SaleReturnController extends Controller
      */
     public function store(Request $request)
     {
-        $model = SaleOrderDetail::where('id', $request->sales_id)->first();
+        $model = new SaleReturn();
+        $model->fill($request->all());
 
-        $model->return_qty += $request->sale_return_qty;
         DB::beginTransaction();
         try {
             if ($model->save()) {
                 $product = Product::where('id',$model->product_id)->first();
                 if(isset($product) && !empty($product)){
-                    $product->stock_in_hand += $request->sale_return_qty;
+                    $product->stock_in_hand += $request->qty;
                     $product->save();
                 }
                 DB::commit();
@@ -86,7 +117,7 @@ class SaleReturnController extends Controller
             DB::rollback();
         }
 
-        return redirect()->back();
+        return redirect()->to('salesreturns/index');
     }
 
 }

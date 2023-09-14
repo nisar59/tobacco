@@ -63,7 +63,7 @@
                                data-toggle="tooltip"
                                title="Reset Filters"><i class="fa fa-refresh"></i></a>
                         </div>
-                        <h2><strong>Customer</strong> List</h2>
+                        <h2><strong>Customer Receipts</strong> List</h2>
                     </div>
                     <!-- END All Orders Title -->
 

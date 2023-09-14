@@ -134,9 +134,6 @@ class PurchaseOrderController extends Controller
             $strt = $req->start;
             $length = $req->length;
 
-//            $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
-//            ->where('supplier_payments.diff_amount','>',0);
-
             $supplier = Supplier::join('expenses', 'expenses.correspondent_id', '=', 'suppliers.id')
                 ->where('expenses.type','purchase_payment')
                 ->where('expenses.deleted',0);
@@ -158,22 +155,6 @@ class PurchaseOrderController extends Controller
                     "recordsTotal" => $total,
                     "recordsFiltered" => $total,
                 ])
-//                ->addColumn('action', function ($row) {
-//                    return '
-//                    <div class="btn-group btn-group-xs">
-//                        <a href="' . url('/purchase/payment/' . $row->id) . '" class="btn btn-default" style="
-//                                height: 36px;
-//                                width: 130px;
-//                                text-align: center;
-//                                padding: 8px;
-//                                background-color: white;
-//                                color: red;
-//                                margin-right: 5px;">
-//                        Make New Payment
-//                        </a>
-//                    </div>
-//                 ';
-//                })
                 ->make(true);
         }
 
