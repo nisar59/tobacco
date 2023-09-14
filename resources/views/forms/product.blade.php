@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="form-group has-success">
-                    <label class="col-md-4 control-label" for="example-min_stock_level">Stock Level</label>
+                    <label class="col-md-4 control-label" for="example-min_stock_level">Min Stock Level</label>
                     <div class="col-md-6">
                         <input oninput="stockCheck(this)" type="number" min="0" id="example-min_stock_level" name="min_stock_level" class="form-control"
                                placeholder="Please enter minimum stock level" data-toggle="tooltip"
