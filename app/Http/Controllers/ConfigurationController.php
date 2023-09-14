@@ -186,14 +186,26 @@ class ConfigurationController extends Controller
             $string = explode('-', $request->exp_date);
             $date1 = date('Y-m-d', strtotime($string[0]));
             $date2 = date('Y-m-d', strtotime($string[1]));
-        }else{
+        } else {
             $date1 = date('Y-m-01');
             $date2 = date('Y-m-d');
         }
 
-        $purchases = PurchaseOrder::where('status', 1)->where('order_date', '>=', $date1)->where('order_date', '<=', $date2)->sum('paid_amount');
+        $purchases = Expense::where('type', 'purchase_payment')
+            ->where('deleted', 0)
+            ->where('exp_date', '>=', $date1)
+            ->where('exp_date', '<=', $date2)
+            ->sum('amount');
+
+//        $purchases = PurchaseOrder::where('status', 1)->where('order_date', '>=', $date1)->where('order_date', '<=', $date2)->sum('paid_amount');
 //        -----------------------------------------------------
-        $sales = SaleOrder::where('status', 1)->where('sale_date', '>=', $date1)->where('sale_date', '<=', $date2)->sum('received_amount');
+        $sales = Expense::where('type', 'sale_receipts')
+            ->where('deleted', 0)
+            ->where('exp_date', '>=', $date1)
+            ->where('exp_date', '<=', $date2)
+            ->sum('amount');
+
+//        $sales = SaleOrder::where('status', 1)->where('sale_date', '>=', $date1)->where('sale_date', '<=', $date2)->sum('received_amount');
 //        -------------------------------------------------------
 
         $cashInPut = DB::table('expenses')

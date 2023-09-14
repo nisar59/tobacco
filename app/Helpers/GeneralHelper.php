@@ -388,20 +388,20 @@ class GeneralHelper
         }
 
         if ($date1 == 0 && $date1 == 0) {
-            $payments = Expense::where('type','sale_receipts')->where('correspondent_id', $id)->get();
+            $receipts = Expense::where('type','sale_receipts')->where('correspondent_id', $id)->get();
         } else {
-            $payments = Expense::where('type','sale_receipts')->where('correspondent_id', $id);
-            $payments->where('exp_date', '>=', $date1);
-            $payments->where('exp_date', '<=', $date2);
-            $payments = $payments->get();
+            $receipts = Expense::where('type','sale_receipts')->where('correspondent_id', $id);
+            $receipts->where('exp_date', '>=', $date1);
+            $receipts->where('exp_date', '<=', $date2);
+            $receipts = $receipts->get();
         }
 
-        foreach ($payments as $jey=>$payment){
-            $receivedData[$jey]['date'] = date('F jS, Y', strtotime($payment->exp_date));
+        foreach ($receipts as $jey=>$receipt){
+            $receivedData[$jey]['date'] = date('F jS, Y', strtotime($receipt->exp_date));
             $receivedData[$jey]['description'] = 'Received';
-            $receivedData[$jey]['invoice'] = $payment->payment_mode;
+            $receivedData[$jey]['invoice'] = $receipt->payment_mode;
             $receivedData[$jey]['dr'] = 0;
-            $receivedData[$jey]['cr'] = $payment->amount;
+            $receivedData[$jey]['cr'] = $receipt->amount;
             $receivedData[$jey]['receivable'] = 0;
         }
         $data = array_merge($salesData, $receivedData);
