@@ -130,7 +130,7 @@
                     data: data,
                 },
                 columns: [
-                    {data: 'sale_date', name: 'sale_date'},
+                    {data: 'date', name: 'date'},
                     {data: 'description', name: 'description'},
                     {data: 'invoice', name: 'invoice'},
                     {

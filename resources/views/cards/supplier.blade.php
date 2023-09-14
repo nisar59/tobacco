@@ -123,7 +123,7 @@
                     data: data,
                 },
                 columns: [
-                    {data: 'order_date', name: 'order_date'},
+                    {data: 'date', name: 'date'},
                     {data: 'description', name: 'description'},
                     {data: 'invoice', name: 'invoice'},
                     {

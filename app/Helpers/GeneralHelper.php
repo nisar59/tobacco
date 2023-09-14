@@ -321,6 +321,8 @@ class GeneralHelper
     public static function getSupplierLedger($id, $date1, $date2)
     {
         $purchaseData = [];
+        $paymentsData = [];
+
         if ($date1 == 0 && $date1 == 0) {
             $purchases = PurchaseOrder::where('supplier_id', $id)->get();
         } else {
@@ -331,27 +333,43 @@ class GeneralHelper
         }
 
         foreach ($purchases as $key => $purchase) {
-            $purchaseData[$key + $purchase->id]['order_date'] = date('F jS, Y', strtotime($purchase->order_date));
-            $purchaseData[$key + $purchase->id]['description'] = 'Purchase';
-            $purchaseData[$key + $purchase->id]['invoice'] = $purchase->invoice_number;
-            $purchaseData[$key + $purchase->id]['dr'] = 0;
-            $purchaseData[$key + $purchase->id]['cr'] = $purchase->invoice_price;
-            $purchaseData[$key + $purchase->id]['payable'] = $purchase->invoice_price;
+            $purchaseData[$key]['date'] = date('F jS, Y', strtotime($purchase->order_date));
+            $purchaseData[$key]['description'] = 'Purchase';
+            $purchaseData[$key]['invoice'] = $purchase->invoice_number;
+            $purchaseData[$key]['dr'] = 0;
+            $purchaseData[$key]['cr'] = $purchase->invoice_price;
+            $purchaseData[$key]['payable'] = $purchase->invoice_price;
 
-            $purchaseData[$key + 1 + $purchase->id]['order_date'] = date('F jS, Y', strtotime($purchase->order_date));
-            $purchaseData[$key + 1 + $purchase->id]['description'] = 'Payment';
-            $purchaseData[$key + 1 + $purchase->id]['invoice'] = $purchase->invoice_number;
-            $purchaseData[$key + 1 + $purchase->id]['dr'] = $purchase->paid_amount;
-            $purchaseData[$key + 1 + $purchase->id]['cr'] = 0;
-            $purchaseData[$key + 1 + $purchase->id]['payable'] = $purchase->invoice_price - $purchase->paid_amount;
         }
-        $purchaseData = array_values($purchaseData);
+
+        if ($date1 == 0 && $date1 == 0) {
+            $payments = Expense::where('type','purchase_payment')->where('correspondent_id', $id)->get();
+        } else {
+            $payments = Expense::where('type','purchase_payment')->where('correspondent_id', $id);
+            $payments->where('exp_date', '>=', $date1);
+            $payments->where('exp_date', '<=', $date2);
+            $payments = $payments->get();
+        }
+
+        foreach ($payments as $jey=>$payment){
+            $paymentsData[$jey]['date'] = date('F jS, Y', strtotime($payment->exp_date));
+            $paymentsData[$jey]['description'] = 'Payment';
+            $paymentsData[$jey]['invoice'] = $payment->payment_mode;
+            $paymentsData[$jey]['dr'] = $payment->amount;
+            $paymentsData[$jey]['cr'] = 0;
+            $paymentsData[$jey]['payable'] = 0;
+        }
+        $data = array_merge($purchaseData, $paymentsData);
+        $purchaseData = array_values($data);
+        $purchaseData = collect($purchaseData)->sortBy('date')->all();
         return  $purchaseData;
     }
 
     public static function getCustomerLedger($id, $date1, $date2)
     {
         $salesData = [];
+        $receivedData = [];
+
         if ($date1 == 0 && $date1 == 0) {
             $sales = SaleOrder::where('customer_id', $id)->get();
         } else {
@@ -361,22 +379,35 @@ class GeneralHelper
             $sales = $sales->get();
         }
         foreach ($sales as $key => $sale) {
-            $salesData[$key + $sale->id]['sale_date'] = date('F jS, Y', strtotime($sale->sale_date));
-            $salesData[$key + $sale->id]['description'] = 'Sale';
-            $salesData[$key + $sale->id]['invoice'] = $sale->invoice_number;
-            $salesData[$key + $sale->id]['dr'] = $sale->invoice_price;
-            $salesData[$key + $sale->id]['cr'] = 0;
-            $salesData[$key + $sale->id]['receivable'] = $sale->invoice_price;
-
-            $salesData[$key + 1 + $sale->id]['sale_date'] = date('F jS, Y', strtotime($sale->sale_date));
-            $salesData[$key + 1 + $sale->id]['description'] = 'Received';
-            $salesData[$key + 1 + $sale->id]['invoice'] = $sale->invoice_number;
-            $salesData[$key + 1 + $sale->id]['dr'] = 0;
-            $salesData[$key + 1 + $sale->id]['cr'] = $sale->received_amount;
-            $salesData[$key + 1 + $sale->id]['receivable'] = $sale->invoice_price - $sale->received_amount;;
+            $salesData[$key]['date'] = date('F jS, Y', strtotime($sale->sale_date));
+            $salesData[$key]['description'] = 'Sale';
+            $salesData[$key]['invoice'] = $sale->invoice_number;
+            $salesData[$key]['dr'] = $sale->invoice_price;
+            $salesData[$key]['cr'] = 0;
+            $salesData[$key]['receivable'] = $sale->invoice_price;
         }
 
-        $salesData = array_values($salesData);
+        if ($date1 == 0 && $date1 == 0) {
+            $payments = Expense::where('type','sale_receipts')->where('correspondent_id', $id)->get();
+        } else {
+            $payments = Expense::where('type','sale_receipts')->where('correspondent_id', $id);
+            $payments->where('exp_date', '>=', $date1);
+            $payments->where('exp_date', '<=', $date2);
+            $payments = $payments->get();
+        }
+
+        foreach ($payments as $jey=>$payment){
+            $receivedData[$jey]['date'] = date('F jS, Y', strtotime($payment->exp_date));
+            $receivedData[$jey]['description'] = 'Received';
+            $receivedData[$jey]['invoice'] = $payment->payment_mode;
+            $receivedData[$jey]['dr'] = 0;
+            $receivedData[$jey]['cr'] = $payment->amount;
+            $receivedData[$jey]['receivable'] = 0;
+        }
+        $data = array_merge($salesData, $receivedData);
+        $salesData = array_values($data);
+        $salesData = collect($salesData)->sortBy('date')->all();
+
         return $salesData;
     }
 
