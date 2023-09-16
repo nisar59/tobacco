@@ -139,14 +139,14 @@
                         data: 'exp_date', name: 'exp_date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                             var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                             var toDay = new Date(oData.exp_date);
-                            var isnew = '<span class="label label-warning">'+toDay.toLocaleDateString("en-US", options)+'</span>';
+                            var isnew = '<span class="">'+toDay.toLocaleDateString("en-US", options)+'</span>';
                             $(nTd).html(isnew);
                         }
                     },
                     {data: 'payment_mode', name: 'payment_mode'},
                     {
                         data: 'amount', name: 'amount', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            $(nTd).html(oData.amount.toLocaleString('en-US'));
+                            $(nTd).html('<span class="">$ '+oData.amount.toLocaleString('en-US')+'</span>');
                         }
                     },
                     {data: 'action', name: 'action', orderable: false, searchable: false}

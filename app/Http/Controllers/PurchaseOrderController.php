@@ -142,9 +142,18 @@ class PurchaseOrderController extends Controller
                 $supplier->where('suppliers.supplier_name', $req->supplier_name);
             }
 
+            if ($req->exp_date != null) {
+                $string = explode('-', $req->exp_date);
+                $date1 = date('Y-m-d', strtotime($string[0]));
+                $date2 = date('Y-m-d', strtotime($string[1]));
+
+                $supplier->where('expenses.exp_date', '>=', $date1);
+                $supplier->where('expenses.exp_date', '<=', $date2);
+            }
+
 
             $total = $supplier->count();
-            $supplier = $supplier->select('suppliers.*','expenses.amount','expenses.payment_mode')
+            $supplier = $supplier->select('suppliers.*','expenses.amount','expenses.payment_mode','expenses.exp_date')
                 ->offset($strt)
                 ->limit($length)
                 ->get();
@@ -418,6 +427,16 @@ class PurchaseOrderController extends Controller
     public function fetchProduct(Request $request)
     {
         $model = Product::where('id', $request->id)->first();
+        return response()->json($model);
+    }
+
+    public function fetchPayable(Request $request)
+    {
+        $model = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
+            ->where('suppliers.status', 1)
+            ->where('suppliers.id', $request->id)
+            ->select(['supplier_payments.diff_amount as payable'])
+            ->first();
         return response()->json($model);
     }
 

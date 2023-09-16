@@ -85,6 +85,7 @@
                                 <th>Contact Number</th>
                                 <th>Email</th>
                                 <th>Status</th>
+                                <th>Receivable</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -135,6 +136,14 @@
                             } else {
                                 isnew = '<span class="label label-warning">In-Active</span>';
                             }
+                            $(nTd).html(isnew);
+                        }
+                    },
+                    {
+                        data: 'receivable', name: 'receivable', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            const numberFormatter = Intl.NumberFormat('en-US');
+                            const formatted = numberFormatter.format(oData.receivable);
+                            var isnew = '<span class="" style="margin-left: 2em">$ '+formatted+'</span>';
                             $(nTd).html(isnew);
                         }
                     },

@@ -38,6 +38,10 @@
                                     <label for="val_skill_supplier_name">Name</label>
                                     <input type="text" placeholder="Search with name" id="val_skill_supplier_name" name="supplier_name" class="form-control filters" required="required" style="margin-top: 3px;margin-right: 5px"/>
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="val_skill_exp_date">Date From/To</label>
+                                    <input type="text" id="val_skill_exp_date" name="exp_date" value="" class="form-control daterange filters"  style="margin-top: 3px;margin-right: 5px"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,6 +70,7 @@
                 <table id="tobacco-supplier" class="display nowrap dataTable dtr-inline">
                     <thead>
                     <tr>
+                        <th>Date</th>
                         <th>Supplier Name</th>
                         <th>Contact Number</th>
                         <th>Mode</th>
@@ -85,6 +90,11 @@
 @endSection
 
 @section('script')
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('.daterange').daterangepicker();
+    </script>
+
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
 
@@ -104,6 +114,14 @@
                     data: data,
                 },
                 columns: [
+                    {
+                        data: 'exp_date', name: 'exp_date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            var toDay = new Date(oData.exp_date);
+                            var isnew = '<span class="">'+toDay.toLocaleDateString("en-US", options)+'</span>';
+                            $(nTd).html(isnew);
+                        }
+                    },
                     {data: 'supplier_name', name: 'supplier_name'},
                     {data: 'contact_number', name: 'contact_number'},
                     {data: 'payment_mode', name: 'payment_mode'},

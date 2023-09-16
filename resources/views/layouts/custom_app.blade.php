@@ -84,6 +84,13 @@
 
                     <!-- Sidebar Navigation -->
                     <ul class="sidebar-nav">
+                        <li class="">
+                            <a href="{{url('/')}}">
+                                <i class="fa fa-home sidebar-nav-icon"></i>
+                                <span class="sidebar-nav-mini-hide">Home</span>
+                            </a>
+                        </li>
+
                         @canany(['configuration.view','product.view'])
                         <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix">

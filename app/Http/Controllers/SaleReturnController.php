@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GeneralHelper;
 use App\Models\Customer;
+use App\Models\CustomerPayment;
 use App\Models\Product;
 use App\Models\SaleOrderDetail;
 use App\Models\SaleReturn;
+use function Brick\Math\sum;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SaleOrder;
@@ -106,10 +108,18 @@ class SaleReturnController extends Controller
                 $product = Product::where('id',$model->product_id)->first();
                 if(isset($product) && !empty($product)){
                     $product->stock_in_hand += $request->qty;
-                    $product->save();
+                    if($product->save()){
+                        $customerPayments = CustomerPayment::where('customer_id',$model->customer_id)->first();
+                        $st = $customerPayments->sale_total-($model->qty*$model->unit_price);
+                        $diff = $st-($customerPayments->paid_total);
+                        $customerPayments->sale_total = $st;
+                        $customerPayments->diff_amount = $diff;
+                        if($customerPayments->save()){
+                            DB::commit();
+                            session()->flash('app_message', 'Sale return saved successfully');
+                        }
+                    }
                 }
-                DB::commit();
-                session()->flash('app_message', 'Sale return saved successfully');
             }
 
         } catch (\Exception $e) {
@@ -118,6 +128,38 @@ class SaleReturnController extends Controller
         }
 
         return redirect()->to('salesreturns/index');
+    }
+
+
+    public function fetchProduct(Request $request)
+    {
+        $model = Customer::join('sale_orders', 'sale_orders.customer_id', '=', 'customers.id')
+            ->join('sale_order_details', 'sale_order_details.sale_order_id', '=', 'sale_orders.id')
+            ->join('products', 'products.id', '=', 'sale_order_details.product_id')
+            ->where('customers.status', 1)
+            ->select(['products.id', 'products.uuid as code'])
+            ->groupBy('products.id','products.uuid')
+            ->get();
+
+        return response()->json($model);
+    }
+
+    public function fetchProductDetails(Request $request)
+    {
+        $model = Product::where('id', $request->id)->select(['unit_price'])->first();
+        return response()->json($model);
+    }
+
+    public function fetchProductQty(Request $request)
+    {
+        $model = SaleOrder::join('sale_order_details', 'sale_order_details.sale_order_id', '=', 'sale_orders.id')
+            ->join('products', 'products.id', '=', 'sale_order_details.product_id')
+            ->where('sale_orders.customer_id', $request->customer_id)
+            ->where('sale_order_details.product_id', $request->product_id)
+            ->sum('sale_order_details.quantity');
+        $data = ['quantity'=>$model];
+
+        return response()->json($data);
     }
 
 }

@@ -22,8 +22,10 @@ use App\Models\Loans;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
+use App\Models\PurchaseReturn;
 use App\Models\Region;
 use App\Models\SaleOrder;
+use App\Models\SaleReturn;
 use App\Models\StockManagement;
 use App\Models\User;
 use App\Models\UserTransaction;
@@ -322,6 +324,7 @@ class GeneralHelper
     {
         $purchaseData = [];
         $paymentsData = [];
+        $purchaseReturnData = [];
 
         if ($date1 == 0 && $date1 == 0) {
             $purchases = PurchaseOrder::where('supplier_id', $id)->get();
@@ -334,11 +337,9 @@ class GeneralHelper
 
         foreach ($purchases as $key => $purchase) {
             $purchaseData[$key]['date'] = date('F jS, Y', strtotime($purchase->order_date));
-            $purchaseData[$key]['description'] = 'Purchase';
+            $purchaseData[$key]['description'] = 'Purchases (credit)';
             $purchaseData[$key]['invoice'] = $purchase->invoice_number;
-            $purchaseData[$key]['dr'] = 0;
-            $purchaseData[$key]['cr'] = $purchase->invoice_price;
-            $purchaseData[$key]['payable'] = $purchase->invoice_price;
+            $purchaseData[$key]['amount'] = $purchase->invoice_price;
 
         }
 
@@ -355,11 +356,30 @@ class GeneralHelper
             $paymentsData[$jey]['date'] = date('F jS, Y', strtotime($payment->exp_date));
             $paymentsData[$jey]['description'] = 'Payment';
             $paymentsData[$jey]['invoice'] = $payment->payment_mode;
-            $paymentsData[$jey]['dr'] = $payment->amount;
-            $paymentsData[$jey]['cr'] = 0;
-            $paymentsData[$jey]['payable'] = 0;
+            $paymentsData[$jey]['amount'] = '- '.$payment->amount;
         }
-        $data = array_merge($purchaseData, $paymentsData);
+
+
+
+        if ($date1 == 0 && $date1 == 0) {
+            $purchase_return = PurchaseReturn::where('deleted',0)->where('supplier_id', $id)->get();
+        } else {
+            $purchase_return = PurchaseReturn::where('deleted',0)->where('supplier_id', $id);
+            $purchase_return->where('return_date', '>=', $date1);
+            $purchase_return->where('return_date', '<=', $date2);
+            $purchase_return = $purchase_return->get();
+        }
+
+        foreach ($purchase_return as $s=>$return){
+            $purchaseReturnData[$s]['date'] = date('F jS, Y', strtotime($return->return_date));
+            $purchaseReturnData[$s]['description'] = 'Returns';
+            $purchaseReturnData[$s]['invoice'] = 'ANY';
+            $purchaseReturnData[$s]['amount'] = '- '.$return->unit_price*$return->qty;
+        }
+
+
+
+        $data = array_merge($purchaseData, $paymentsData, $purchaseReturnData);
         $purchaseData = array_values($data);
         $purchaseData = collect($purchaseData)->sortBy('date')->all();
         return  $purchaseData;
@@ -369,6 +389,7 @@ class GeneralHelper
     {
         $salesData = [];
         $receivedData = [];
+        $saleReturnData = [];
 
         if ($date1 == 0 && $date1 == 0) {
             $sales = SaleOrder::where('customer_id', $id)->get();
@@ -380,11 +401,9 @@ class GeneralHelper
         }
         foreach ($sales as $key => $sale) {
             $salesData[$key]['date'] = date('F jS, Y', strtotime($sale->sale_date));
-            $salesData[$key]['description'] = 'Sale';
+            $salesData[$key]['description'] = 'Sales (credit)';
             $salesData[$key]['invoice'] = $sale->invoice_number;
-            $salesData[$key]['dr'] = $sale->invoice_price;
-            $salesData[$key]['cr'] = 0;
-            $salesData[$key]['receivable'] = $sale->invoice_price;
+            $salesData[$key]['amount'] = $sale->invoice_price;
         }
 
         if ($date1 == 0 && $date1 == 0) {
@@ -400,11 +419,28 @@ class GeneralHelper
             $receivedData[$jey]['date'] = date('F jS, Y', strtotime($receipt->exp_date));
             $receivedData[$jey]['description'] = 'Received';
             $receivedData[$jey]['invoice'] = $receipt->payment_mode;
-            $receivedData[$jey]['dr'] = 0;
-            $receivedData[$jey]['cr'] = $receipt->amount;
-            $receivedData[$jey]['receivable'] = 0;
+            $receivedData[$jey]['amount'] = $receipt->amount;
         }
-        $data = array_merge($salesData, $receivedData);
+
+
+        if ($date1 == 0 && $date1 == 0) {
+            $sale_return = SaleReturn::where('deleted',0)->where('customer_id', $id)->get();
+        } else {
+            $sale_return = SaleReturn::where('deleted',0)->where('customer_id', $id);
+            $sale_return->where('return_date', '>=', $date1);
+            $sale_return->where('return_date', '<=', $date2);
+            $sale_return = $sale_return->get();
+        }
+
+        foreach ($sale_return as $s=>$return){
+            $saleReturnData[$s]['date'] = date('F jS, Y', strtotime($return->return_date));
+            $saleReturnData[$s]['description'] = 'Returns';
+            $saleReturnData[$s]['invoice'] = 'ANY';
+            $saleReturnData[$s]['amount'] = '- '.$return->unit_price*$return->qty;
+        }
+
+
+        $data = array_merge($salesData, $receivedData, $saleReturnData);
         $salesData = array_values($data);
         $salesData = collect($salesData)->sortBy('date')->all();
 

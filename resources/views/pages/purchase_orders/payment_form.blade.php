@@ -19,7 +19,7 @@
                 <div class="block">
                     <!-- User Assist Title -->
                     <div class="block-title">
-                        <h2>Add New Payment Input</h2>
+                        <h2>Make New Payment</h2>
                     </div>
                     <!-- END User Assist Title -->
 
@@ -98,7 +98,7 @@
                                 <input type="number" id="example-text-input2-amount" name="amount" class="form-control"
                                        placeholder="Please enter Payment Amount" data-toggle="tooltip"
                                        value="{{old('amount',$model->amount)}}"
-                                       title="Payment Amount!">
+                                       title="Payment Amount!" required>
                                 @if($errors->has('amount'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('amount') }}</strong>
@@ -155,4 +155,33 @@
     <script type="text/javascript">
         $('.supplier-filters').select2();
     </script>
+
+    <script>
+        $("#example-text-input2-amount").change(function () {
+            var data = $('#val_skill_supplier_id').find(":selected").val();
+            var amountInput = $(this).val();
+            if (data !== '') {
+                $.ajax({
+                    type: "POST",
+                    url: "{{url('purchase/fetch/payable')}}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': data
+                    },
+                    dataType: "json",
+                    success: function (responce) {
+                        if (amountInput > responce.payable) {
+                            Swal.fire(
+                                'Oops!',
+                                'Payment must be Equal or below of payable: ' + responce.payable + ' !',
+                                'error'
+                            );
+                            $('#example-text-input2-amount').val('0');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
 @endsection

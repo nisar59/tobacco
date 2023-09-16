@@ -35,17 +35,18 @@ class SupplierController extends Controller
             $strt = $req->start;
             $length = $req->length;
 
-            $supplier = Supplier::whereIn('status', [1, 0]);
+            $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
+                ->whereIn('suppliers.status', [1, 0]);
 
             if ($req->supplier_name != null) {
-                $supplier->where('supplier_name', $req->supplier_name);
+                $supplier->where('suppliers.supplier_name', $req->supplier_name);
             }
             if ($req->contact_number != null) {
-                $supplier->where('contact_number', $req->contact_number);
+                $supplier->where('suppliers.contact_number', $req->contact_number);
             }
 
             $total = $supplier->count();
-            $supplier = $supplier->select('suppliers.*')->offset($strt)->limit($length)->get();
+            $supplier = $supplier->select('suppliers.*','supplier_payments.diff_amount as payable')->offset($strt)->limit($length)->get();
 
             return DataTables::of($supplier)
                 ->setOffset($strt)

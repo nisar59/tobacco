@@ -86,9 +86,7 @@
                         <th class="text-center">Date</th>
                         <th class="text-center">Description</th>
                         <th>Invoice</th>
-                        <th class="text-center">Dr.</th>
-                        <th class="text-center">Cr.</th>
-                        <th class="text-center">Payable</th>
+                        <th class="text-center">Amount</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -127,33 +125,11 @@
                     {data: 'description', name: 'description'},
                     {data: 'invoice', name: 'invoice'},
                     {
-                        data: 'dr', name: 'dr', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            if(oData.dr === 0){
-                                var isnew = '<span class="">-</span>';
-                            }else {
-                                var isnew = '<span class="">'+oData.dr+'</span>';
-                            }
-
-                            $(nTd).html(isnew);
-                        }
-                    },
-                    {
-                        data: 'cr', name: 'cr', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                            if(oData.cr === 0){
-                                var isnew = '<span class="">-</span>';
-                            }else {
-                                var isnew = '<span class="">'+oData.cr+'</span>';
-                            }
-
-                            $(nTd).html(isnew);
-                        }
-                    },
-                    {
-                        data: 'payable', name: 'payable', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        data: 'amount', name: 'amount', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                             if(oData.payable === 0){
-                                var isnew = '<span class="">-</span>';
+                                var isnew = '<span class="">0</span>';
                             }else {
-                                var isnew = '<span class="">'+oData.payable+'</span>';
+                                var isnew = '<span class="">'+oData.amount+'</span>';
                             }
 
                             $(nTd).html(isnew);

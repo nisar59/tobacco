@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\PurchaseOrderDetail;
 use App\Models\PurchaseReturn;
 use App\Models\Supplier;
+use App\Models\SupplierPayment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -108,10 +109,18 @@ class PurchaseReturnController extends Controller
                 $product = Product::where('id', $model->product_id)->first();
                 if (isset($product) && !empty($product)) {
                     $product->stock_in_hand -= $request->qty;
-                    $product->save();
+                    if($product->save()){
+                        $supplierPayments = SupplierPayment::where('supplier_id',$model->supplier_id)->first();
+                        $pt = $supplierPayments->purchase_total-($model->qty*$model->unit_price);
+                        $diff = $pt-($supplierPayments->paid_total);
+                        $supplierPayments->purchase_total = $pt;
+                        $supplierPayments->diff_amount = $diff;
+                        if($supplierPayments->save()){
+                            DB::commit();
+                            session()->flash('app_message', 'Purchase return saved successfully');
+                        }
+                    }
                 }
-                DB::commit();
-                session()->flash('app_message', 'Purchase return saved successfully');
             }
 
         } catch (\Exception $e) {
@@ -120,5 +129,30 @@ class PurchaseReturnController extends Controller
         }
 
         return redirect()->to('purchasereturns/index');
+    }
+
+    public function fetchProduct(Request $request)
+    {
+        $model = Supplier::join('purchase_orders', 'purchase_orders.supplier_id', '=', 'suppliers.id')
+            ->join('purchase_order_details', 'purchase_order_details.purchase_order_id', '=', 'purchase_orders.id')
+            ->join('products', 'products.id', '=', 'purchase_order_details.product_id')
+            ->where('suppliers.status', 1)
+            ->select(['products.id', 'products.uuid as code'])
+            ->groupBy('products.id','products.uuid')
+            ->get();
+
+        return response()->json($model);
+    }
+
+    public function fetchProductDetails(Request $request)
+    {
+        $model = Product::where('id', $request->id)->select(['unit_price'])->first();
+        return response()->json($model);
+    }
+
+    public function fetchProductQty(Request $request)
+    {
+        $model = Product::where('id', $request->id)->select(['stock_in_hand'])->first();
+        return response()->json($model);
     }
 }

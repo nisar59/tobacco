@@ -75,6 +75,7 @@
                         <th>Contact Number</th>
                         <th>Email</th>
                         <th>Status</th>
+                        <th>Payable</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -126,6 +127,15 @@
                             $(nTd).html(isnew);
                         }
                     },
+                    {
+                        data: 'payable', name: 'payable', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            const numberFormatter = Intl.NumberFormat('en-US');
+                            const formatted = numberFormatter.format(oData.payable);
+                            var isnew = '<span class="" style="margin-left: 2em">$ '+formatted+'</span>';
+                            $(nTd).html(isnew);
+                        }
+                    },
+
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
 

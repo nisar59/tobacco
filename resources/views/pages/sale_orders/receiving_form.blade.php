@@ -19,7 +19,7 @@
                 <div class="block">
                     <!-- User Assist Title -->
                     <div class="block-title">
-                        <h2>Add New Payment Input</h2>
+                        <h2>Add Receipts</h2>
                     </div>
                     <!-- END User Assist Title -->
 
@@ -48,7 +48,7 @@
                         <input type="hidden" id="val_skill_type" name="type" class="form-control" value="sale_receipts">
 
                         <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
-                            <label class="col-md-3 control-label" for="example-text-input2">Payment Date</label>
+                            <label class="col-md-3 control-label" for="example-text-input2">Date</label>
                             <div class="col-md-9">
                                 @if(isset($model) && !empty($model->exp_date))
                                     <input type="date" id="example-text-input2-exp_date" name="exp_date"
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
-                            <label class="col-md-3 control-label" for="val_skill_payment_mode">Payment Mode</label>
+                            <label class="col-md-3 control-label" for="val_skill_payment_mode">Mode</label>
                             <div class="col-md-9">
                                 <select id="val_skill_payment_mode" name="payment_mode" class="form-control"
                                         required="required">
@@ -92,12 +92,12 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
-                            <label class="col-md-3 control-label" for="val_skill_payment_mode">Payment Amount</label>
+                            <label class="col-md-3 control-label" for="val_skill_payment_mode">Amount</label>
                             <div class="col-md-9">
                                 <input type="number" id="example-text-input2-amount" name="amount" class="form-control"
                                        placeholder="Please enter Payment Amount" data-toggle="tooltip"
                                        value="{{old('amount',$model->amount)}}"
-                                       title="Payment Amount!">
+                                       title="Payment Amount!" required>
                                 @if($errors->has('amount'))
                                     <div class="invalid-feedback">
                                         <strong>{{ $errors->first('amount') }}</strong>
@@ -154,4 +154,32 @@
     <script type="text/javascript">
         $('.customer-filters').select2();
     </script>
+    <script>
+        $("#example-text-input2-amount").change(function () {
+            var data = $('#val_skill_customer_id').find(":selected").val();
+            var amountInput = $(this).val();
+            if (data !== '') {
+                $.ajax({
+                    type: "POST",
+                    url: "{{url('sales/fetch/receivable')}}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'id': data
+                    },
+                    dataType: "json",
+                    success: function (responce) {
+                        if (amountInput > responce.receivable) {
+                            Swal.fire(
+                                'Oops!',
+                                'Receiving must be Equal or below of receivable: ' + responce.receivable + ' !',
+                                'error'
+                            );
+                            $('#example-text-input2-amount').val('0');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
 @endsection

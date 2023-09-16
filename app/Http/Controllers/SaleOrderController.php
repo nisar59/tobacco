@@ -147,9 +147,17 @@ class SaleOrderController extends Controller
                 $customer->where('customers.customer_name', $req->customer_name);
             }
 
+            if ($req->exp_date != null) {
+                $string = explode('-', $req->exp_date);
+                $date1 = date('Y-m-d', strtotime($string[0]));
+                $date2 = date('Y-m-d', strtotime($string[1]));
+
+                $customer->where('expenses.exp_date', '>=', $date1);
+                $customer->where('expenses.exp_date', '<=', $date2);
+            }
 
             $total = $customer->count();
-            $customer = $customer->select('customers.*','expenses.amount','expenses.payment_mode')
+            $customer = $customer->select('customers.*','expenses.amount','expenses.payment_mode','expenses.exp_date')
                 ->offset($strt)
                 ->limit($length)
                 ->get();
@@ -452,6 +460,16 @@ class SaleOrderController extends Controller
     public function fetchProduct(Request $request)
     {
         $model = Product::where('id', $request->id)->first();
+        return response()->json($model);
+    }
+
+    public function fetchReceivable(Request $request)
+    {
+        $model = Customer::join('customer_payments', 'customer_payments.customer_id', '=', 'customers.id')
+            ->where('customers.status', 1)
+            ->where('customers.id', $request->id)
+            ->select(['customer_payments.diff_amount as receivable'])
+            ->first();
         return response()->json($model);
     }
 }

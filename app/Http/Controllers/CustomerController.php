@@ -10,6 +10,7 @@ use App\Http\Requests\Customers\Create;
 use Yajra\DataTables\DataTables;
 use Throwable;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 /**
  * Description of CustomerController
  *
@@ -29,17 +30,18 @@ class CustomerController extends Controller
             $strt = $req->start;
             $length = $req->length;
 
-            $customer = Customer::whereIn('status', [1, 0]);
+            $customer = Customer::join('customer_payments', 'customer_payments.customer_id', '=', 'customers.id')
+                ->whereIn('customers.status', [1, 0]);
 
             if ($req->customer_name != null) {
-                $customer->where('customer_name', $req->customer_name);
+                $customer->where('customers.customer_name', $req->customer_name);
             }
             if ($req->contact_number != null) {
-                $customer->where('contact_number', $req->contact_number);
+                $customer->where('customers.contact_number', $req->contact_number);
             }
 
             $total = $customer->count();
-            $customer = $customer->select('customers.*')->offset($strt)->limit($length)->get();
+            $customer = $customer->select('customers.*','customer_payments.diff_amount as receivable')->offset($strt)->limit($length)->get();
 
             return DataTables::of($customer)
                 ->setOffset($strt)
@@ -55,9 +57,9 @@ class CustomerController extends Controller
                         $icon = '<i class="text-success fa fa-check"></i>';
                     }
 
-                    if($sales>0){
+                    if ($sales > 0) {
                         $display = 'block';
-                    }else{
+                    } else {
                         $display = 'none';
                     }
 
@@ -81,11 +83,11 @@ class CustomerController extends Controller
                              ' . csrf_field() . '
                               ' . method_field('POST') . '
                             <button type="submit" class="btn btn-secondary cursor-pointer">
-                                '.$icon.'
+                                ' . $icon . '
                             </button>
                         </form>
                         <a href="' . url('/customer/show/' . $row->id) . '" class="btn btn-default" style="
-                                display:'.$display.';
+                                display:' . $display . ';
                                 height: 36px;
                                 width: 36px;
                                 text-align: center;
@@ -126,15 +128,15 @@ class CustomerController extends Controller
      * @param  Customer $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $req,$id)
+    public function show(Request $req, $id)
     {
         $customer = Customer::find($id);
         if ($req->ajax()) {
-            $purchases = GeneralHelper::getCustomerLedger($id,$date1=0,$date2=0);
+            $purchases = GeneralHelper::getCustomerLedger($id, $date1 = 0, $date2 = 0);
 
             if (isset($_GET['sale_date']) && !empty($_GET['sale_date'])) {
                 $string = explode('-', $_GET['sale_date']);
-                $purchases = GeneralHelper::getCustomerLedger($id,date('Y-m-d', strtotime($string[0])),date('Y-m-d', strtotime($string[1])));
+                $purchases = GeneralHelper::getCustomerLedger($id, date('Y-m-d', strtotime($string[0])), date('Y-m-d', strtotime($string[1])));
             }
 
             return DataTables::of($purchases)
@@ -150,19 +152,20 @@ class CustomerController extends Controller
         ]);
 
     }
+
     public function exportLedger(Request $req)
     {
         try {
             if (isset($_GET['sale_date']) && !empty($_GET['sale_date'])) {
                 $string = explode('-', $_GET['sale_date']);
-                $purchases = GeneralHelper::getCustomerLedger($req->id,date('Y-m-d', strtotime($string[0])),date('Y-m-d', strtotime($string[1])));
-            }else{
-                $purchases = GeneralHelper::getCustomerLedger($req->id,$date1=0,$date2=0);
+                $purchases = GeneralHelper::getCustomerLedger($req->id, date('Y-m-d', strtotime($string[0])), date('Y-m-d', strtotime($string[1])));
+            } else {
+                $purchases = GeneralHelper::getCustomerLedger($req->id, $date1 = 0, $date2 = 0);
             }
 
             // share data to view
-            view()->share('pages.customers.ledger',$purchases);
-            $pdf = PDF::loadView('pages.customers.ledger', array('purchases' =>  $purchases));
+            view()->share('pages.customers.ledger', $purchases);
+            $pdf = PDF::loadView('pages.customers.ledger', array('purchases' => $purchases));
             // download PDF file with download method
             return $pdf->download('customer_ledger.pdf');
 
@@ -256,9 +259,9 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::find($id);
-        if($customer->status == 0){
+        if ($customer->status == 0) {
             $status = 1;
-        }else{
+        } else {
             $status = 0;
         }
         $customer->status = $status;

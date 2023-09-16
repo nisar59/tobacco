@@ -43,6 +43,10 @@
                                                    class="form-control filters" required="required"
                                                    style="margin-top: 3px;margin-right: 5px"/>
                                         </div>
+                                        <div class="col-md-3">
+                                            <label for="val_skill_exp_date">Date From/To</label>
+                                            <input type="text" id="val_skill_exp_date" name="exp_date" value="" class="form-control daterange filters"  style="margin-top: 3px;margin-right: 5px"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +62,7 @@
                         <div class="block-options pull-right">
                             <a href="{{url('sales/receipts/0')}}" class="btn btn-alt btn-sm btn-primary"
                                data-toggle="tooltip"
-                               title="Add New payment">Make New Receiving</a>
+                               title="Add New payment">Add Receipts</a>
                             <a href="{{url('sales/receivable')}}" class="btn btn-alt btn-sm btn-primary"
                                data-toggle="tooltip"
                                title="Reset Filters"><i class="fa fa-refresh"></i></a>
@@ -73,6 +77,7 @@
                         <table id="tobacco-customer" class="display nowrap dataTable dtr-inline">
                             <thead>
                             <tr>
+                                <th>Date</th>
                                 <th>Customer Name</th>
                                 <th>Contact Number</th>
                                 <th>Mode</th>
@@ -93,6 +98,11 @@
 @endSection
 
 @section('script')
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('.daterange').daterangepicker();
+    </script>
+
     <script type="text/javascript" language="javascript"
             src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
@@ -113,6 +123,14 @@
                     data: data,
                 },
                 columns: [
+                    {
+                        data: 'exp_date', name: 'exp_date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            var toDay = new Date(oData.exp_date);
+                            var isnew = '<span class="">'+toDay.toLocaleDateString("en-US", options)+'</span>';
+                            $(nTd).html(isnew);
+                        }
+                    },
                     {data: 'customer_name', name: 'customer_name'},
                     {data: 'contact_number', name: 'contact_number'},
                     {data: 'payment_mode', name: 'payment_mode'},
