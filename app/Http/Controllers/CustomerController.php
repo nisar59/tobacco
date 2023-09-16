@@ -130,7 +130,12 @@ class CustomerController extends Controller
      */
     public function show(Request $req, $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::join('customer_payments', 'customer_payments.customer_id', '=', 'customers.id')
+            ->where('customers.status', 1)
+            ->where('customers.id', $id)
+            ->select(['customers.*', 'customer_payments.diff_amount as receivable_amount'])
+            ->first();
+
         if ($req->ajax()) {
             $purchases = GeneralHelper::getCustomerLedger($id, $date1 = 0, $date2 = 0);
 

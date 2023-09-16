@@ -91,8 +91,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        
+
                         </tbody>
+                        <tfoot>
+                        <tr>
+                            <th style="font-size: large" class="text-center">Balance Receivable</th>
+                            <th class="text-center"></th>
+                            <th></th>
+                            <th style="font-size: large">{{$record->receivable_amount}}</th>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

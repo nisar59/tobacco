@@ -134,7 +134,11 @@ class SupplierController extends Controller
      */
     public function show(Request $req,$id)
     {
-        $supplier = Supplier::find($id);
+        $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
+            ->where('suppliers.status', 1)
+            ->where('suppliers.id', $id)
+            ->select(['suppliers.*', 'supplier_payments.diff_amount as payable_amount'])
+            ->first();
 
         if ($req->ajax()) {
             $purchases = GeneralHelper::getSupplierLedger($id,$date1=0,$date2=0);
