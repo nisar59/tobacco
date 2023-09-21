@@ -135,8 +135,8 @@ class PurchaseOrderController extends Controller
             $length = $req->length;
 
             $supplier = Supplier::join('expenses', 'expenses.correspondent_id', '=', 'suppliers.id')
-                ->where('expenses.type','purchase_payment')
-                ->where('expenses.deleted',0);
+                ->where('expenses.type', 'purchase_payment')
+                ->where('expenses.deleted', 0);
 
             if ($req->supplier_name != null) {
                 $supplier->where('suppliers.supplier_name', $req->supplier_name);
@@ -153,7 +153,7 @@ class PurchaseOrderController extends Controller
 
 
             $total = $supplier->count();
-            $supplier = $supplier->select('suppliers.*','expenses.amount','expenses.payment_mode','expenses.exp_date')
+            $supplier = $supplier->select('suppliers.*', 'expenses.amount', 'expenses.payment_mode', 'expenses.exp_date')
                 ->offset($strt)
                 ->limit($length)
                 ->get();
@@ -246,7 +246,7 @@ class PurchaseOrderController extends Controller
         try {
             if ($model->save()) {
                 $supplierPayments = PaymentHelper::supplierPurchase($model->supplier_id);
-                if($supplierPayments == false){
+                if ($supplierPayments == false) {
                     session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
                     DB::rollback();
                 }
@@ -337,7 +337,7 @@ class PurchaseOrderController extends Controller
             $model->image = $photoName;
         }
 
-        if(!isset($model->order_date)){
+        if (!isset($model->order_date)) {
             $model->order_date = $request->order_date_old;
         }
         $model->user_id = Auth::user()->id;
@@ -350,7 +350,7 @@ class PurchaseOrderController extends Controller
                 if ($model->save()) {
 
                     $supplierPayments = PaymentHelper::supplierPurchase($model->supplier_id);
-                    if($supplierPayments == false){
+                    if ($supplierPayments == false) {
                         session()->flash('app_error', 'Something is wrong while saving PurchaseOrder');
                         DB::rollback();
                     }
@@ -444,7 +444,7 @@ class PurchaseOrderController extends Controller
     public function formPayment($id)
     {
         $supplier = Supplier::join('supplier_payments', 'supplier_payments.supplier_id', '=', 'suppliers.id')
-            ->where('supplier_payments.diff_amount','>',0)->get();
+            ->where('supplier_payments.diff_amount', '>', 0)->select('suppliers.*', 'supplier_payments.diff_amount')->get();
 
         return view('pages.purchase_orders.payment_form', [
             'model' => new Expense(),
@@ -462,27 +462,27 @@ class PurchaseOrderController extends Controller
             'attachment_file' => 'dimensions:min_width=650,min_height=430'
         ]);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             session()->flash('app_error', 'attachment file should min size of 750*500');
             return redirect()->back();
         }
 
         $model = new Expense;
         $model->fill($request->all());
-        if(isset($request->attachment_file) && !empty($request->attachment_file)){
+        if (isset($request->attachment_file) && !empty($request->attachment_file)) {
             $photoName = time() . '.' . $request->attachment_file->getClientOriginalExtension();
             $model->attachment_file = $photoName;
             $request->attachment_file->move(public_path('invoices'), $photoName);
-        }else{
+        } else {
             $model->attachment_file = '';
         }
         $model->correspondent_id = $request->supplier_id;
 
         DB::beginTransaction();
         try {
-            if($model->save()){
+            if ($model->save()) {
                 $result = PaymentHelper::supplierPurchasePayment($request->supplier_id);
-                if($result == true){
+                if ($result == true) {
                     DB::commit();
                     session()->flash('app_message', 'Payment added successfully');
                     return redirect()->to('purchase/payable');

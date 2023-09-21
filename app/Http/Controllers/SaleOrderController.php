@@ -398,7 +398,7 @@ class SaleOrderController extends Controller
     public function formReceipt($id)
     {
         $customer = Customer::join('customer_payments', 'customer_payments.customer_id', '=', 'customers.id')
-            ->where('customer_payments.diff_amount','>',0)->get();
+            ->where('customer_payments.diff_amount','>',0)->select('customers.*','customer_payments.diff_amount')->get();
 
         return view('pages.sale_orders.receiving_form', [
             'model' => new Expense(),
