@@ -13,9 +13,9 @@
                 {{csrf_field()}}
                 @if(isset($model) && !empty($model->id)) <input type="hidden" name="id" value="{{$model->id}}"> @else @endif
 
-                <div class="col-md-6 form-group has-success">
+                <div class="col-md-12 form-group has-success">
                     <label class="col-md-3 control-label" for="example-text-input2-customer_name">Customer Name</label>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <input type="text" id="example-text-input2-customer_name" name="customer_name" class="form-control"
                                placeholder="Please enter Customer Name" data-toggle="tooltip" value="{{old('customer_name',$model->customer_name)}}"
                                title="Customer Name!">
@@ -26,9 +26,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-md-6 form-group has-success">
-                    <label class="col-md-2 control-label" for="example-text-input2-address">Address</label>
-                    <div class="col-md-10">
+                <div class="col-md-12 form-group has-success">
+                    <label class="col-md-3 control-label" for="example-text-input2-address">Address</label>
+                    <div class="col-md-6">
                         <input type="text" id="example-text-input2-address" name="address" class="form-control"
                                placeholder="Please enter Address" data-toggle="tooltip" value="{{old('address',$model->address)}}"
                                title="Address!">
@@ -39,9 +39,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-md-6 form-group has-success">
+                <div class="col-md-12 form-group has-success">
                     <label class="col-md-3 control-label" for="example-text-input2-contact_number">Contact Number</label>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <input type="text" id="example-text-input2-contact_number" name="contact_number" class="form-control"
                                placeholder="Please enter Contact Number" data-toggle="tooltip" value="{{old('contact_number',$model->contact_number)}}"
                                title="Contact Number!">
@@ -52,9 +52,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-md-6 form-group has-success">
-                    <label class="col-md-2 control-label" for="example-text-input2-email_id">Email</label>
-                    <div class="col-md-10">
+                <div class="col-md-12 form-group has-success">
+                    <label class="col-md-3 control-label" for="example-text-input2-email_id">Email</label>
+                    <div class="col-md-6">
                         <input type="text" id="example-text-input2-email_id" name="email_id" class="form-control"
                                placeholder="Please enter Email" data-toggle="tooltip" value="{{old('email_id',$model->email_id)}}"
                                title="Email!">
@@ -67,8 +67,11 @@
                 </div>
                 <div class="form-group has-success form-actions">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Save
-                        </button>
+                        <label class="col-md-3 control-label" for="example-text-input2-email_id"></label>
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Save
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>
