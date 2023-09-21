@@ -97,7 +97,7 @@
                         <th style="font-size: large" class="text-center">Balance Receivable</th>
                         <th class="text-center"></th>
                         <th></th>
-                        <th style="font-size: large">{{$record->payable_amount}}</th>
+                        <th style="font-size: large">$ {{$record->payable_amount}}</th>
                     </tr>
                     </tfoot>
                 </table>
@@ -137,7 +137,7 @@
                             if(oData.payable === 0){
                                 var isnew = '<span class="">0</span>';
                             }else {
-                                var isnew = '<span class="">'+oData.amount+'</span>';
+                                var isnew = '<span class="">$ '+oData.amount+'</span>';
                             }
 
                             $(nTd).html(isnew);
