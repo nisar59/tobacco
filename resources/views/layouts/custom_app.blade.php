@@ -69,7 +69,8 @@
                 <div class="sidebar-content">
                     <!-- Brand -->
                     <a href="{{url('/')}}" class="sidebar-brand">
-                        <i class="gi gi-flash"></i><span class="sidebar-nav-mini-hide"><strong>Tobacco</strong></span>
+                        <i class="gi gi-flash"></i>
+                        <span class="sidebar-nav-mini-hide"><strong>Tobacco</strong></span>
                     </a>
                     <!-- END Brand -->
                     <div class="sidebar-section sidebar-user clearfix sidebar-nav-mini-hide">
@@ -95,15 +96,20 @@
                         <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix">
                                     <a href="javascript:void(0)" data-toggle="tooltip"
-                                       title="Create and manage configuration"><i
-                                                class="fa fa-cog"></i></a>
+                                       title="Create and manage configuration">
+                                              <img  height="18px" src="{{ asset('navicons/configure.png') }}"
+                                                   alt="cog">
+                                        {{--<i class="fa fa-cog"></i>--}}
+                                    </a>
                                 </span>
                             <span class="sidebar-header-title">Configurations</span>
                         </li>
                         <li class="{{ (strpos(Request::url(), 'config') || strpos(Request::url(), 'product')) ? 'active' : '' }}">
                             <a href="#" class="sidebar-nav-menu">
                                 <i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i>
-                                <i class="gi gi-settings sidebar-nav-icon"></i>
+                                {{--<i class="gi gi-settings sidebar-nav-icon"></i>--}}
+                                <img height="18px" src="{{ asset('navicons/configure.png') }}"
+                                     alt="cog">&nbsp;&nbsp;
                                 <span class="sidebar-nav-mini-hide">Configurations</span>
                             </a>
                             <ul>
@@ -123,8 +129,10 @@
                                     @can($addPermission)
                                         <li>
                                             <a href="{{$url}}">
-                                                <i class="fa fa-cog sidebar-nav-icon"></i><span
-                                                        class="sidebar-nav-mini-hide">{{$types}}</span>
+                                                <img height="13px" src="{{ asset('navicons/configure.png') }}"
+                                                     alt="cog">&nbsp;&nbsp;
+                                                {{--<i class="fa fa-cog sidebar-nav-icon"></i>--}}
+                                                <span class="sidebar-nav-mini-hide">{{$types}}</span>
                                             </a>
                                         </li>
                                     @endcan
@@ -137,24 +145,31 @@
                         <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix">
                                     <a href="javascript:void(0)" data-toggle="tooltip"
-                                       title="Create and manage configuration"><i
-                                                class="fa fa-user"></i></a>
+                                       title="Create and manage configuration">
+                                        {{--<i class="fa fa-user"></i>--}}
+                                        <img height="18px" src="{{ asset('navicons/users.png') }}"
+                                             alt="cog">&nbsp;&nbsp;
+                                    </a>
                                 </span>
                             <span class="sidebar-header-title">Permissions</span>
                         </li>
                         @can('permissions.view')
                             <li>
                                 <a href="{{url('roles')}}">
-                                    <i class="fa fa-users sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Roles</span>
+                                    {{--<i class="fa fa-users sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/roles.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Roles</span>
                                 </a>
                             </li>
                         @endcan
                         @can('user.view')
                             <li>
                                 <a href="{{url('users')}}">
-                                    <i class="fa fa-users sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Users</span>
+                                    {{--<i class="fa fa-users sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/users.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Users</span>
                                 </a>
                             </li>
                         @endcan
@@ -164,29 +179,39 @@
                             <span class="sidebar-header-options clearfix">
                                 <a href="javascript:void(0)" data-toggle="tooltip"
                                    title="Create and manage purchases, sales and inventory!">
-                                    <i class="fa fa-shopping-cart"></i></a>
+                                    {{--<i class="fa fa-shopping-cart"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/purchases-1.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                </a>
                             </span>
                             <span class="sidebar-header-title">Purchases</span>
                         </li>
                         @can('supplier.view')
                             <li>
                                 <a href="{{url('supplier/index')}}">
-                                    <i class="fa fa-industry sidebar-nav-icon"></i>
+                                    {{--<i class="fa fa-industry sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/suppliers.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
                                     <span class="sidebar-nav-mini-hide">Suppliers</span></a>
                             </li>
                         @endcan
                         @can('purchases.view')
                             <li>
-                                <a href="{{url('purchase/index')}}"><i
-                                            class="fa fa-shopping-cart sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Purchases</span></a>
+                                <a href="{{url('purchase/index')}}">
+                                    {{--<i class="fa fa-shopping-cart sidebar-nav-icon"></i>--}}
+
+                                    <img height="18px" src="{{ asset('navicons/purchases.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Purchases</span></a>
                             </li>
                         @endcan
                         @can('returns.purchase')
                             <li>
-                                <a href="{{url('purchasereturns/index')}}"><i
-                                            class="fa fa-shopping-cart sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Returns</span></a>
+                                <a href="{{url('purchasereturns/index')}}">
+                                    {{--<i class="fa fa-shopping-cart sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/return.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Returns</span></a>
                             </li>
                         @endcan
                         @endcanany
@@ -195,28 +220,40 @@
                             <span class="sidebar-header-options clearfix">
                                 <a href="javascript:void(0)" data-toggle="tooltip" title=""
                                    data-original-title="Create the most amazing pages with the widget kit!">
-                                    <i class="fa fa-tag"></i></a>
+                                    {{--<i class="fa fa-tag"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/sales-2.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                </a>
                             </span>
                             <span class="sidebar-header-title">Sales</span>
                         </li>
                         @can('customer.view')
                             <li>
-                                <a href="{{url('customer/index')}}"><i
-                                            class="fa fa-user sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Customers</span></a>
+                                <a href="{{url('customer/index')}}">
+                                    {{--<i class="fa fa-user sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/customers.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Customers</span>
+                                </a>
                             </li>
                         @endcan
                         @can('sales.view')
                             <li>
-                                <a href="{{url('sales/index')}}"><i class="fa fa-tag sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Sales</span></a>
+                                <a href="{{url('sales/index')}}">
+                                    {{--<i class="fa fa-tag sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/sales.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Sales</span>
+                                </a>
                             </li>
                         @endcan
                         @can('returns.sale')
                             <li>
-                                <a href="{{url('salesreturns/index')}}"><i
-                                            class="fa fa-shopping-cart sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Returns</span></a>
+                                <a href="{{url('salesreturns/index')}}">
+                                    {{--<i class="fa fa-shopping-cart sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/return.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Returns</span></a>
                             </li>
                         @endcan
                         @endcanany
@@ -225,40 +262,56 @@
                             <span class="sidebar-header-options clearfix">
                                 <a href="javascript:void(0)" data-toggle="tooltip"
                                    title="Create and manage purchases, sales and inventory!">
-                                    <i class="fa fa-money"></i></a></span>
+                                    {{--<i class="fa fa-money"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/Cash.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                </a>
+                            </span>
                             <span class="sidebar-header-title">Financial's</span>
                         </li>
                         @can('cash.view')
                             <li>
-                                <a href="{{url('cash/index')}}"><i class="fa fa-money sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Cash Input</span></a>
+                                <a href="{{url('cash/index')}}">
+                                    {{--<i class="fa fa-money sidebar-nav-icon"></i>--}}
+                                    <img height="16px" src="{{ asset('navicons/cash-input.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Cash Input</span></a>
                             </li>
                         @endcan
                         @can('purchases.payable')
                             <li>
-                                <a href="{{url('purchase/payable')}}"><i
-                                            class="fa fa-cc-amex sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Add Payments</span></a>
+                                <a href="{{url('purchase/payable')}}">
+                                    {{--<i class="fa fa-cc-amex sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/add-payment.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Add Payments</span></a>
                             </li>
                         @endcan
                         @can('sales.receivable')
                             <li>
-                                <a href="{{url('sales/receivable')}}"><i
-                                            class="fa fa-hand-holding-usd sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Add Receipts</span></a>
+                                <a href="{{url('sales/receivable')}}">
+                                    {{--<i class="fa fa-hand-holding-usd sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/add-receipts.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Add Receipts</span></a>
                             </li>
                         @endcan
                         @can('expense.view')
                             <li>
-                                <a href="{{url('expense/index')}}"><i class="fa fa-money sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Add Expense</span></a>
+                                <a href="{{url('expense/index')}}">
+                                    {{--<i class="fa fa-money sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/add-expense.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Add Expense</span></a>
                             </li>
                         @endcan
                         @can('reports.cash_flow')
                             <li>
-                                <a href="{{url('report/profit/loss')}}"><i
-                                            class="fa fa-money sidebar-nav-icon"></i><span
-                                            class="sidebar-nav-mini-hide">Cash Flow</span></a>
+                                <a href="{{url('report/profit/loss')}}">
+                                    {{--<i class="fa fa-money sidebar-nav-icon"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/Cash-flow.png') }}"
+                                         alt="cog">&nbsp;&nbsp;
+                                    <span class="sidebar-nav-mini-hide">Cash Flow</span></a>
                             </li>
                         @endcan
                         @endcanany

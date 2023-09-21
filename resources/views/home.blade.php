@@ -19,26 +19,46 @@
                         <div class="col-xs-6 col-sm-3">
                             <h2 class="animation-hatch">
                                 $<strong>{{$sales}}</strong><br>
-                                <small style="font-size: small"><i class="fa fa-money"></i> Sales</small>
+                                <small style="font-size: small">
+                                    {{--<i class="fa fa-money"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/sales-2.png') }}"
+                                         alt="cog">
+                                    Sales
+                                </small>
                             </h2>
                         </div>
                         <div class="col-xs-6 col-sm-3">
                             <h2 class="animation-hatch">
                                 $<strong>{{$purchases}}</strong><br>
-                                <small style="font-size: small"><i class="fa fa-money"></i> Purchases</small>
+                                <small style="font-size: small">
+                                    {{--<i class="fa fa-money"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/purchases-1.png') }}"
+                                         alt="cog">
+                                    Purchases
+                                </small>
                             </h2>
                         </div>
                         <!-- We hide the last stat to fit the other 3 on small devices -->
                         <div class="col-xs-6 col-sm-3">
                             <h2 class="animation-hatch">
                                 $<strong>{{number_format($expenses)}}</strong><br>
-                                <small style="font-size: small"><i class="gi gi-briefcase"></i> Expenses</small>
+                                <small style="font-size: small">
+                                    {{--<i class="gi gi-briefcase"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/Expenses.png') }}"
+                                         alt="cog">
+                                    Expenses
+                                </small>
                             </h2>
                         </div>
                         <div class="col-sm-6  col-sm-3">
                             <h2 class="animation-hatch">
                                 $<strong>{{number_format($profitLoos)}}</strong><br>
-                                <small style="font-size: small"><i class="fa fa-money"></i> Cash-In-Hand</small>
+                                <small style="font-size: small">
+                                    {{--<i class="fa fa-money"></i>--}}
+                                    <img height="18px" src="{{ asset('navicons/Cash.png') }}"
+                                         alt="cog">
+                                    Cash-In-Hand
+                                </small>
                             </h2>
                         </div>
                     </div>
