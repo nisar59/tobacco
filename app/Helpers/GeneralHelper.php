@@ -419,7 +419,7 @@ class GeneralHelper
             $receivedData[$jey]['date'] = date('F jS, Y', strtotime($receipt->exp_date));
             $receivedData[$jey]['description'] = 'Received';
             $receivedData[$jey]['invoice'] = $receipt->payment_mode;
-            $receivedData[$jey]['amount'] = $receipt->amount;
+            $receivedData[$jey]['amount'] = '- '.$receipt->amount;
         }
 
 
