@@ -34,7 +34,7 @@
                             <div class="col-md-10">
                                 <select id="val_skill_customer_id" name="customer_id"
                                         class="form-control  customer-filters" required="required">
-                                    <option value="">Select Supplier</option>
+                                    <option value="">Select Customer</option>
                                     @foreach($customers as $customer)
                                         <option @if($customer->customer_id == $selected_customer_id) selected
                                                 @endif value="{{$customer->id}}"><strong>Customer

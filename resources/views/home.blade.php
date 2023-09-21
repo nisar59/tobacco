@@ -31,7 +31,7 @@
                         <!-- We hide the last stat to fit the other 3 on small devices -->
                         <div class="col-xs-6 col-sm-3">
                             <h2 class="animation-hatch">
-                                <strong>{{number_format($expenses)}}</strong><br>
+                                $<strong>{{number_format($expenses)}}</strong><br>
                                 <small style="font-size: small"><i class="gi gi-briefcase"></i> Expenses</small>
                             </h2>
                         </div>
