@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\GeneralHelper;
 use App\Models\Customer;
 use App\Models\CustomerPayment;
+use App\Models\Expense;
 use App\Models\Product;
 use App\Models\SaleOrderDetail;
 use App\Models\SaleReturn;
@@ -110,9 +111,24 @@ class SaleReturnController extends Controller
                     $product->stock_in_hand += $request->qty;
                     if($product->save()){
                         $customerPayments = CustomerPayment::where('customer_id',$model->customer_id)->first();
-                        $st = $customerPayments->sale_total-($model->qty*$model->unit_price);
-                        $diff = $st-($customerPayments->paid_total);
+
+                        $saleTotal = SaleOrder::where('customer_id', $model->customer_id)->sum('invoice_price');
+                        $customerPaymentSum  = Expense::where('correspondent_id',$model->customer_id)->where('type','sale_receipts')->where('deleted',0)->sum('amount');
+
+                        $saleReturnTotal = DB::table('sale_returns')
+                            ->selectRaw('SUM(sale_returns.qty * sale_returns.unit_price) as total')
+                            ->where('customer_id', $model->customer_id)->get()->toArray()[0]->total;
+                        if(isset($saleReturnTotal) && !empty($saleReturnTotal)){
+                            $sRTotal = $saleReturnTotal;
+                        }else{
+                            $sRTotal = 0;
+                        }
+
+                        
+                        $st = $saleTotal-$sRTotal;
+                        $diff = $st-$customerPaymentSum;
                         $customerPayments->sale_total = $st;
+                        $customerPayments->received_total = $customerPaymentSum;
                         $customerPayments->diff_amount = $diff;
                         if($customerPayments->save()){
                             DB::commit();

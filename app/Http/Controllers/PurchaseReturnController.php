@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\GeneralHelper;
+use App\Models\Expense;
 use App\Models\Product;
 use App\Models\PurchaseOrderDetail;
 use App\Models\PurchaseReturn;
@@ -77,7 +78,7 @@ class PurchaseReturnController extends Controller
         $suppliers = Supplier::join('purchase_orders', 'purchase_orders.supplier_id', '=', 'suppliers.id')
             ->where('suppliers.status', 1)
             ->select(['suppliers.id', 'suppliers.supplier_name'])
-            ->groupBy('suppliers.id','suppliers.supplier_name')
+            ->groupBy('suppliers.id', 'suppliers.supplier_name')
             ->get();
 
         $products = Product::where('deleted', 0)
@@ -103,19 +104,35 @@ class PurchaseReturnController extends Controller
         $model = new PurchaseReturn();
         $model->fill($request->all());
 
+
         DB::beginTransaction();
         try {
             if ($model->save()) {
                 $product = Product::where('id', $model->product_id)->first();
                 if (isset($product) && !empty($product)) {
                     $product->stock_in_hand -= $request->qty;
-                    if($product->save()){
-                        $supplierPayments = SupplierPayment::where('supplier_id',$model->supplier_id)->first();
-                        $pt = $supplierPayments->purchase_total-($model->qty*$model->unit_price);
-                        $diff = $pt-($supplierPayments->paid_total);
+
+                    if ($product->save()) {
+                        $supplierPayments = SupplierPayment::where('supplier_id', $model->supplier_id)->first();
+
+                        $purchaseTotal = PurchaseOrder::where('supplier_id', $model->supplier_id)->sum('invoice_price');
+                        $supplierPaymentSum  = Expense::where('correspondent_id',$model->supplier_id)->where('type','purchase_payment')->where('deleted',0)->sum('amount');
+
+                        $purchaseReturnTotal = DB::table('purchase_returns')
+                            ->selectRaw('SUM(purchase_returns.qty * purchase_returns.unit_price) as total')
+                            ->where('supplier_id', $model->supplier_id)->get()->toArray()[0]->total;
+                        if(isset($purchaseReturnTotal) && !empty($purchaseReturnTotal)){
+                            $pRTotal = $purchaseReturnTotal;
+                        }else{
+                            $pRTotal = 0;
+                        }
+
+                        $pt = $purchaseReturnTotal - $pRTotal;
+                        $diff = $pt - $supplierPaymentSum;
                         $supplierPayments->purchase_total = $pt;
+                        $supplierPayments->paid_total = $supplierPaymentSum;
                         $supplierPayments->diff_amount = $diff;
-                        if($supplierPayments->save()){
+                        if ($supplierPayments->save()) {
                             DB::commit();
                             session()->flash('app_message', 'Purchase return saved successfully');
                         }
@@ -139,7 +156,7 @@ class PurchaseReturnController extends Controller
             ->where('suppliers.status', 1)
             ->where('suppliers.id', $request->id)
             ->select(['products.id', 'products.uuid as code'])
-            ->groupBy('products.id','products.uuid')
+            ->groupBy('products.id', 'products.uuid')
             ->get();
 
         return response()->json($model);
