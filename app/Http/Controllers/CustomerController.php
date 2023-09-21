@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\GeneralHelper;
+use App\Models\CustomerPayment;
 use App\Models\SaleOrder;
 use Illuminate\Http\Request;
 use App\Models\Customer;
@@ -208,7 +209,9 @@ class CustomerController extends Controller
         $model->fill($request->all());
 
         if ($model->save()) {
-
+            $newCustomerPayments = new CustomerPayment();
+            $newCustomerPayments->customer_id = $model->id;
+            $newCustomerPayments->save();
             session()->flash('app_message', 'Customer saved successfully');
             return redirect()->to('customer/index');
         } else {

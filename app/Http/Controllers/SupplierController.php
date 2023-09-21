@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\GeneralHelper;
 use App\Models\PurchaseOrder;
+use App\Models\SupplierPayment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
@@ -184,7 +185,9 @@ class SupplierController extends Controller
         $model->fill($request->all());
 
         if ($model->save()) {
-
+            $newSupplierPayment = new SupplierPayment();
+            $newSupplierPayment->supplier_id = $model->id;
+            $newSupplierPayment->save();
             session()->flash('app_message', 'Supplier saved successfully');
             return redirect()->to('supplier/index');
         } else {
