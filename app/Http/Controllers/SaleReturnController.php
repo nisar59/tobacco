@@ -137,6 +137,7 @@ class SaleReturnController extends Controller
             ->join('sale_order_details', 'sale_order_details.sale_order_id', '=', 'sale_orders.id')
             ->join('products', 'products.id', '=', 'sale_order_details.product_id')
             ->where('customers.status', 1)
+            ->where('customers.id', $request->id)
             ->select(['products.id', 'products.uuid as code'])
             ->groupBy('products.id','products.uuid')
             ->get();

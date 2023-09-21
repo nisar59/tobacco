@@ -137,6 +137,7 @@ class PurchaseReturnController extends Controller
             ->join('purchase_order_details', 'purchase_order_details.purchase_order_id', '=', 'purchase_orders.id')
             ->join('products', 'products.id', '=', 'purchase_order_details.product_id')
             ->where('suppliers.status', 1)
+            ->where('suppliers.id', $request->id)
             ->select(['products.id', 'products.uuid as code'])
             ->groupBy('products.id','products.uuid')
             ->get();
