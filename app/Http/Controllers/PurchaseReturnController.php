@@ -127,7 +127,7 @@ class PurchaseReturnController extends Controller
                             $pRTotal = 0;
                         }
 
-                        $pt = $purchaseReturnTotal - $pRTotal;
+                        $pt = $purchaseTotal - $pRTotal;
                         $diff = $pt - $supplierPaymentSum;
                         $supplierPayments->purchase_total = $pt;
                         $supplierPayments->paid_total = $supplierPaymentSum;

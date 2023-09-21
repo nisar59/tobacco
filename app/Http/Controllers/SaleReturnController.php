@@ -124,7 +124,7 @@ class SaleReturnController extends Controller
                             $sRTotal = 0;
                         }
 
-                        
+
                         $st = $saleTotal-$sRTotal;
                         $diff = $st-$customerPaymentSum;
                         $customerPayments->sale_total = $st;
