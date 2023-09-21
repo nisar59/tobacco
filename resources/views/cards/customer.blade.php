@@ -84,10 +84,10 @@
                     <table id="tobacco_sales" class="display nowrap dataTable dtr-inline">
                         <thead>
                         <tr>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Description</th>
-                            <th>Invoice</th>
-                            <th class="text-center">Amount</th>
+                            <th class="text-left">Date</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-left">Invoice</th>
+                            <th class="text-left">Amount</th>
                         </tr>
                         </thead>
                         <tbody>
