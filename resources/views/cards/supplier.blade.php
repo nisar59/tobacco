@@ -94,7 +94,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th style="font-size: large" class="text-center">Balance Receivable</th>
+                        <th style="font-size: large" class="text-center">Balance Payable</th>
                         <th class="text-center"></th>
                         <th></th>
                         <th style="font-size: large">$ {{$record->payable_amount}}</th>
