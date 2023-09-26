@@ -1,3 +1,10 @@
+<style>
+    .table {
+        border-collapse: separate;
+        border-spacing:0 20px;
+    }
+
+</style>
 <div class="row">
     <div class="col-md-12">
         @if( Session::has("app_message") )
@@ -245,15 +252,41 @@
                     {{--===================================================Total Amount========================================--}}
                     <table class="table table-vcenter" id="tobacco_purchase_order_total">
                         <tbody>
-                        <tr class="active">
-                            <td colspan="5" class="text-right"><span class="h3"><strong style="font-size:large">TOTAL AMOUNT</strong></span>
+                        <tr>
+                            <td colspan="3" class="text-center"><span class="h3"><strong
+                                            style="font-size:large;font-weight:Bold;">Carriage</strong></span></td>
+                            <td colspan="3" class="text-right"><span class="h3">
+                                    <strong style="font-size:large;font-weight:Bold;">%</strong>
+                                    <input type="number"
+                                           value="10"
+                                           name="carriage_percentage"
+                                           style="border: 0!important;"
+                                           id="carriage_percent"
+                                           >
+                                </span>
                             </td>
-                            <td class="text-right"><span class="h3"><strong>$</strong>&nbsp;<input type="text"
-                                                                                                   value=" @if(isset($model) && !empty($model->invoice_price)) {{number_format($model->invoice_price)}} @else 0 @endif"
-                                                                                                   name="order_total"
-                                                                                                   style="border: 0!important;"
-                                                                                                   id="order_total"
-                                                                                                   readonly="readonly"></span>
+
+                            <td class="text-right"><span class="h3"><strong>$</strong>&nbsp;
+                                    <input type="text"
+                                           value=""
+                                           name="carriage_total"
+                                           style="border: 0!important;"
+                                           id="carriage_amount"
+                                           readonly="readonly"></span>
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td colspan="3" class="text-center"><span class="h3"><strong
+                                            style="font-size:large;font-weight:Bold;">TOTAL AMOUNT</strong></span>
+                            </td>
+                            <td colspan="3" class="text-center">.</td>
+                            <td class="text-right"><span class="h3"><strong>$</strong>&nbsp;
+                                    <input type="text"
+                                           value=" @if(isset($model) && !empty($model->invoice_price)) {{number_format($model->invoice_price)}} @else 0 @endif"
+                                           name="order_total"
+                                           style="border: 0!important;"
+                                           id="order_total"
+                                           readonly="readonly"></span>
                             </td>
                         </tr>
                         </tbody>
