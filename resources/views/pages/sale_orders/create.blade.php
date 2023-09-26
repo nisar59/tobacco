@@ -142,6 +142,7 @@
             cp = cp / 100;
 
             const resultAmount = Math.round((total * cp));
+            $("#carriage_amount").val(resultAmount);
             total = total + resultAmount;
 
 
