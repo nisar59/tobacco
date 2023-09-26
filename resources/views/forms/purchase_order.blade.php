@@ -253,7 +253,7 @@
                     <table class="table table-vcenter" id="tobacco_purchase_order_total">
                         <tbody>
                         <tr>
-                            <td colspan="3" class="text-center"><span class="h3"><strong
+                            <td colspan="3" class="text-left"><span class="h3"><strong
                                             style="font-size:large;font-weight:Bold;">Carriage</strong></span></td>
                             <td colspan="3" class="text-right"><span class="h3">
                                     <strong style="font-size:large;font-weight:Bold;">%</strong>
@@ -276,7 +276,7 @@
                             </td>
                         </tr>
                         <tr class="active">
-                            <td colspan="3" class="text-center"><span class="h3"><strong
+                            <td colspan="3" class="text-left"><span class="h3"><strong
                                             style="font-size:large;font-weight:Bold;">TOTAL AMOUNT</strong></span>
                             </td>
                             <td colspan="3" class="text-center">.</td>
