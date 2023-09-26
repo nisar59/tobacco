@@ -228,7 +228,8 @@
                             </td>
                         </tr>
                         <tr class="active">
-                            <td colspan="5" class="text-left"><span class="h3"><strong style="font-size:large;font-weight:Bold;">TOTAL AMOUNT</strong></span></td>
+                            <td colspan="3" class="text-left"><span class="h3"><strong style="font-size:large;font-weight:Bold;">TOTAL AMOUNT</strong></span></td>
+                            <td colspan="3" class="text-center">.</td>
                             <td class="text-right"><span class="h3"><strong>$</strong>&nbsp;<input value=" @if(isset($model) && !empty($model->invoice_price)) {{number_format($model->invoice_price)}} @else 0 @endif" type="text" name="order_total" style="border: 0!important;" id="order_total" readonly="readonly"></span></td>
                         </tr>
                         </tbody>
