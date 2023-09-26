@@ -138,6 +138,38 @@
                 total += parseFloat(this.value.replaceAll(',',''));
             });
 
+            var cp = $("#carriage_percent").val();
+            cp = cp / 100;
+
+            const resultAmount = Math.round((amount * cp));
+            total = total + resultAmount;
+
+
+            total = total.toLocaleString('en-US');
+            $("#order_total").val(total);
+        }
+
+
+
+        $("#carriage_percent").change(function () {
+            var valueSelected = $(this).val();
+            valueSelected = valueSelected / 100;
+            update_price_total_with_carriage(valueSelected);
+
+        });
+
+        function update_price_total_with_carriage(carriage) {
+            // var total = 0;
+            let total = 0;
+            $('.p_total_price').each(function(){
+                total += parseFloat(this.value.replaceAll(',',''));
+            });
+
+
+            const resultAmount = Math.round((total * carriage));
+            $("#carriage_amount").val(resultAmount);
+            total = total + resultAmount;
+
             total = total.toLocaleString('en-US');
             $("#order_total").val(total);
         }

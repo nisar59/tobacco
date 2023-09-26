@@ -85,14 +85,7 @@
             var price = $("#p_unit_price_" + data_value).val();
             var amount = (qty * price);
 
-            var cp = $("#carriage_percent").val();
-            cp = cp / 100;
-
-            const resultAmount = Math.round((amount * cp));
-            amount = amount + resultAmount;
-
             amount = amount.toLocaleString('en-US');
-            $("#carriage_amount").val(resultAmount);
             $("#p_total_price_" + data_value).val(amount);
 
             update_price_total();
@@ -104,25 +97,12 @@
             var qty = $("#p_unit_qty_" + data_value).val();
             var amount = (qty * price);
 
-            var cp = $("#carriage_percent").val();
-            cp = cp / 100;
-
-            const resultAmount = Math.round((amount * cp));
-            amount = amount + resultAmount;
-
             amount = amount.toLocaleString('en-US');
             $("#p_total_price_" + data_value).val(amount);
 
             update_price_total();
 
         }
-
-        $("#carriage_percent").change(function () {
-            var valueSelected = $(this).val();
-            valueSelected = valueSelected / 100;
-            update_price_total_with_carriage(valueSelected);
-
-        });
 
         function update_price_total() {
             // var total = 0;
@@ -139,21 +119,28 @@
             $("#order_total").val(total);
         }
 
-        function update_price_total_with_carriage(carriage) {
-            // var total = 0;
-            let total = 0;
-            $('.p_total_price').each(function () {
-                total += parseFloat(this.value.replaceAll(',', ''));
-            });
-
-
-            const resultAmount = Math.round((total * carriage));
-            $("#carriage_amount").val(resultAmount);
-
-            total = total + resultAmount;
-            total = total.toLocaleString('en-US');
-            $("#order_total").val(total);
-        }
+        // $("#carriage_percent").change(function () {
+        //     var valueSelected = $(this).val();
+        //     valueSelected = valueSelected / 100;
+        //     update_price_total_with_carriage(valueSelected);
+        //
+        // });
+        //
+        // function update_price_total_with_carriage(carriage) {
+        //     // var total = 0;
+        //     let total = 0;
+        //     $('.p_total_price').each(function () {
+        //         total += parseFloat(this.value.replaceAll(',', ''));
+        //     });
+        //
+        //
+        //     const resultAmount = Math.round((total * carriage));
+        //     $("#carriage_amount").val(resultAmount);
+        //
+        //     total = total + resultAmount;
+        //     total = total.toLocaleString('en-US');
+        //     $("#order_total").val(total);
+        // }
 
         setTimeout(function () {
             $("div.alert").remove();
