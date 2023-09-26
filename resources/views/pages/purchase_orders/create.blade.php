@@ -111,10 +111,12 @@
                 total += parseFloat(this.value.replaceAll(',', ''));
             });
 
-            const resultAmount = Math.round((total * 0.1));
-            $("#carriage_amount").val(resultAmount);
+            // var cp = $("#carriage_percent").val();
+            // cp = cp / 100;
+            //
+            // const resultAmount = Math.round((total * cp));
+            // total = total + resultAmount;
 
-            total = total + resultAmount;
             total = total.toLocaleString('en-US');
             $("#order_total").val(total);
         }

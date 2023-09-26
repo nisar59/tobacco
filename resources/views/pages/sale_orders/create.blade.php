@@ -141,7 +141,7 @@
             var cp = $("#carriage_percent").val();
             cp = cp / 100;
 
-            const resultAmount = Math.round((amount * cp));
+            const resultAmount = Math.round((total * cp));
             total = total + resultAmount;
 
 
