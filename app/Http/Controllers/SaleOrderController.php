@@ -61,7 +61,7 @@ class SaleOrderController extends Controller
             }
 
             $total = $model->count();
-            $model = $model->select('sale_orders.*')->offset($strt)->limit($length)->get();
+            $model = $model->select('sale_orders.*')->offset($strt)->limit($length)->orderBy('id', 'DESC')->get();
 
             return DataTables::of($model)
                 ->setOffset($strt)
@@ -228,6 +228,7 @@ class SaleOrderController extends Controller
         $model->user_id = Auth::user()->id;
         $model->invoice_price = (int)str_replace(',', '', $request->order_total);
         $model->invoice_number = $invoice_number;
+        $model->carriage_amount = $request->carriage_amount;
         $model->status = 1;
         DB::beginTransaction();
         try {
@@ -266,7 +267,7 @@ class SaleOrderController extends Controller
                 }
                 DB::commit();
                 session()->flash('app_message', 'SaleOrder saved successfully');
-                return redirect()->to('sales/receivable');
+                return redirect()->to('sales/index');
             }
 
         } catch (\Exception $e) {
@@ -320,6 +321,7 @@ class SaleOrderController extends Controller
         if(!isset($model->sale_date)){
             $model->sale_date = $request->sale_date_old;
         }
+        $model->carriage_amount = $request->carriage_amount;
         DB::beginTransaction();
         try {
             if ($model->save()) {

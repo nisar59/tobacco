@@ -259,7 +259,7 @@
                                     {{--<strong style="font-size:large;font-weight:Bold;">%</strong>--}}
                                     {{--<input type="number"--}}
                                            {{--value="10"--}}
-                                           {{--name="carriage_percentage"--}}
+                                           {{--name="carriage_amount"--}}
                                            {{--style="border: 0!important;"--}}
                                            {{--id="carriage_percent"--}}
                                            {{-->--}}

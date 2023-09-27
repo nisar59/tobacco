@@ -221,7 +221,7 @@
                             <td class="text-right"><span class="h3"><strong>$</strong>&nbsp;
                                     <input type="text"
                                            value=""
-                                           name="carriage_total"
+                                           name="carriage_amount"
                                            style="border: 0!important;"
                                            id="carriage_amount"
                                            readonly="readonly"></span>

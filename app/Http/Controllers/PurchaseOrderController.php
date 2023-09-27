@@ -56,7 +56,7 @@ class PurchaseOrderController extends Controller
             }
 
             $total = $model->count();
-            $model = $model->select('purchase_orders.*')->offset($strt)->limit($length)->get();
+            $model = $model->select('purchase_orders.*')->offset($strt)->limit($length)->orderBy('id', 'DESC')->get();
 
             return DataTables::of($model)
                 ->setOffset($strt)
@@ -241,7 +241,7 @@ class PurchaseOrderController extends Controller
         $model->status = 1;
         $model->user_id = Auth::user()->id;
         $model->invoice_price = (int)str_replace(',', '', $request->order_total);
-
+//        $model->carriage_amount = $request->carriage_amount;
         DB::beginTransaction();
         try {
             if ($model->save()) {
@@ -274,7 +274,7 @@ class PurchaseOrderController extends Controller
 
                 DB::commit();
                 session()->flash('app_message', 'PurchaseOrder saved successfully');
-                return redirect()->to('purchase/payable');
+                return redirect()->to('purchase/index');
             }
 
         } catch (\Exception $e) {
@@ -342,7 +342,7 @@ class PurchaseOrderController extends Controller
         }
         $model->user_id = Auth::user()->id;
         $model->invoice_price = (int)str_replace(',', '', $request->order_total);
-
+//        $model->carriage_amount = $request->carriage_amount;
         DB::beginTransaction();
         try {
             $stockUpdate = GeneralHelper::stockPurchases($request->purchase_id);

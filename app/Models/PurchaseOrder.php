@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 @property varchar $image image
 @property varchar $invoice_number invoice number
 @property varchar $invoice_price invoice price
+@property varchar $carriage_amount carriage amount
 @property tinyint $status status
 @property timestamp $created_at created at
 @property timestamp $updated_at updated at
@@ -30,6 +31,7 @@ class PurchaseOrder extends Model
 'order_date',
 'invoice_number',
 'invoice_price',
+'carriage_amount',
 'paid_amount',
 'payment_method',
 'image',

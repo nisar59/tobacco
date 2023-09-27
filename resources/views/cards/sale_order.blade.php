@@ -1,3 +1,9 @@
+<style>
+	.table {
+		border-collapse: separate;
+		border-spacing:0 20px;
+	}
+</style>
 <div id="page-content">
 	<!-- END Invoice Header -->
 
@@ -35,8 +41,8 @@
 			<div class="col-md-12">
 				<!-- Client Info -->
 				<div class="col-sm-6">
-					<img src="{{ asset('backend/img/placeholders/avatars/smoker.png') }}" alt="photo" class="img-circle" style="height: 65px;width: 100px;">
-					<hr>
+					{{--<img src="{{ asset('backend/img/placeholders/avatars/smoker.png') }}" alt="photo" class="img-circle" style="height: 65px;width: 100px;">--}}
+					{{--<hr>--}}
 					<h2><strong>Customer Ifo.</strong></h2>
 					<address>
 						<i class="fa fa-user"></i> &nbsp;{{$record->customer->customer_name}}<br>
@@ -47,8 +53,8 @@
 				</div>
 
 				<div class="col-sm-6 text-right">
-					<img src="{{ asset('backend/img/placeholders/avatars/sales.png') }}" alt="photo" class="img-circle" style="height: 65px;width: 130px;">
-					<hr>
+					{{--<img src="{{ asset('backend/img/placeholders/avatars/sales.png') }}" alt="photo" class="img-circle" style="height: 65px;width: 130px;">--}}
+					{{--<hr>--}}
 					<h2><strong>Sales Info.</strong></h2>
 					<address>
 						{{date('Y-M-d',strtotime($record->sale_date))}}&nbsp;&nbsp;<i class="fa fa-calendar"></i> <br>
@@ -88,7 +94,11 @@
 					</tr>
 				@endforeach
 				<tr class="active">
-					<td colspan="4" class="text-right"><span class="h3"><strong>TOTAL AMOUNT</strong></span></td>
+					<td colspan="4" class="text-left"><span class="h3"><strong>Carriage</strong></span></td>
+					<td class="text-right"><span class="h3"><strong>$ {{number_format($record->carriage_amount)}}</strong></span></td>
+				</tr>
+				<tr class="active">
+					<td colspan="4" class="text-left"><span class="h3"><strong>TOTAL AMOUNT</strong></span></td>
 					<td class="text-right"><span class="h3"><strong>$ {{number_format($record->invoice_price)}}</strong></span></td>
 				</tr>
 				</tbody>

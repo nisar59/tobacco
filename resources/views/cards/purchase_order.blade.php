@@ -1,3 +1,9 @@
+<style>
+    .table {
+        border-collapse: separate;
+        border-spacing:0 20px;
+    }
+</style>
 <div id="page-content">
     <!-- END Invoice Header -->
 
@@ -98,8 +104,12 @@
                         <td class="text-right"><span class="label label-primary">$ {{number_format($detail->quantity*$detail->unit_price)}}</span></td>
                     </tr>
                 @endforeach
+                {{--<tr class="active">--}}
+                    {{--<td colspan="4" class="text-left"><span class="h3"><strong>Carriage</strong></span></td>--}}
+                    {{--<td class="text-right"><span class="h3"><strong>$ {{number_format($record->carriage_amount)}}</strong></span></td>--}}
+                {{--</tr>--}}
                 <tr class="active">
-                    <td colspan="4" class="text-right"><span class="h3"><strong>TOTAL AMOUNT</strong></span></td>
+                    <td colspan="4" class="text-left"><span class="h3"><strong>TOTAL AMOUNT</strong></span></td>
                     <td class="text-right"><span class="h3"><strong>$ {{number_format($record->invoice_price)}}</strong></span></td>
                 </tr>
                 </tbody>

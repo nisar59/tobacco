@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property varchar $invoice_number invoice number
+ * @property varchar $carriage_amount carriage amount
+ * @property varchar $invoice_price invoice price
  * @property varchar $customer_id customer id
  * @property int unsigned $user_id user id
  * @property date $sale_date sale date
@@ -23,6 +25,7 @@ class SaleOrder extends Model
     protected $fillable = ['invoice_number',
         'customer_id',
         'invoice_price',
+        'carriage_amount',
         'received_amount',
         'payment_method',
         'user_id',
