@@ -59,21 +59,21 @@
                                     <li class="active">
                                         <a href="javascript:void(0)">
                                 <span class="badge pull-right"
-                                      style="background-color: red">{{ucfirst($record->type)}}</span>
+                                      style="background-color: #0c0c00">{{ucfirst($record->type)}}</span>
                                             <strong>Payment Type</strong>
                                         </a>
                                     </li>
                                     <li class="active">
                                         <a href="javascript:void(0)">
                                 <span class="badge pull-right"
-                                      style="background-color: red">{{ucfirst($record->payment_mode)}}</span>
+                                      style="background-color: #0c0c00">{{ucfirst($record->payment_mode)}}</span>
                                             <strong>Payment Mode</strong>
                                         </a>
                                     </li>
                                     <li class="active">
                                         <a href="javascript:void(0)">
                                 <span class="badge pull-right"
-                                      style="background-color: red">{{number_format($record->amount)}}</span>
+                                      style="background-color: #0c0c00">$ {{number_format((float)$record->amount, 2, '.', '')}}</span>
                                             <strong>Amount</strong>
                                         </a>
                                     </li>

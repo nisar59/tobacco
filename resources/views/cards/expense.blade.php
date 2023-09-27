@@ -71,7 +71,7 @@
                                 <li class="active">
                                     <a href="javascript:void(0)">
                                 <span class="badge pull-right"
-                                      style="background-color: red">{{number_format($record->amount)}}</span>
+                                      style="background-color: red">{{number_format((float)$record->amount, 2, '.', '')}}</span>
                                         <strong>Amount</strong>
                                     </a>
                                 </li>

@@ -84,7 +84,7 @@
                             </tr>
                             <tr style="background-image: linear-gradient(90deg, #090979 0%, #090979 35%, #00d4ff 100%); color:white">
                                 <td colspan="2"><strong style="font-weight:bold; font-size: x-large">Cash in Hand as on</strong>&nbsp;&nbsp;<strong style="font-weight:bolder; font-size:x-large">{{date('m/d/Y', strtotime($date1))}}</strong></td>
-                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format($cashInPutPre)}}</td>
+                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format((float)$cashInPutPre, 2, '.', '')}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -100,15 +100,15 @@
                             <tbody>
                             <tr>
                                 <td colspan="2"><strong>Cash from Customers</strong></td>
-                                <td class="text-right" style="font-size:large">{{number_format($sales)}}</td>
+                                <td class="text-right" style="font-size:large">{{number_format((float)$sales, 2, '.', '')}}</td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong>Cash input</strong></td>
-                                <td class="text-right" style="font-size:large">{{number_format($cashInPut)}}</td>
+                                <td class="text-right" style="font-size:large">{{number_format((float)$cashInPut, 2, '.', '')}}</td>
                             </tr>
                             <tr>
                                 <td colspan="2"><strong style="font-weight: bold">Total Inflows</strong></td>
-                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format($grossCashInflow)}}</td>
+                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format((float)$grossCashInflow, 2, '.', '')}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -123,19 +123,19 @@
                             <tbody>
                             <tr>
                                 <td colspan="2"> <strong>Payment to Suppliers</strong></td>
-                                <td class="text-right" style="font-size:large">{{number_format($purchases)}}</td>
+                                <td class="text-right" style="font-size:large">{{number_format((float)$purchases, 2, '.', '')}}</td>
                             </tr>
                             @if(!empty($expenseTypesNp) && $expenseTypesNp!=null)
                                 @foreach($expenseTypesNp as $expenseTypeNp)
                                     <tr>
                                         <td colspan="2"><strong>{{$expenseTypeNp->lable}}</strong></td>
-                                        <td class="text-right" style="font-size:large">{{number_format(\App\Helpers\GeneralHelper::getExpenseAll($expenseTypeNp->value))}}</td>
+                                        <td class="text-right" style="font-size:large">{{number_format((float)\App\Helpers\GeneralHelper::getExpenseAll($expenseTypeNp->value, 2, '.', ''))}}</td>
                                     </tr>
                                 @endforeach
                             @endif
                             <tr>
                                 <td colspan="2"><strong style="font-weight: bold">Total Outflows</strong></td>
-                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format($netCashOutflow)}}</td>
+                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format((float)$netCashOutflow, 2, '.', '')}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -146,7 +146,7 @@
                             <tbody style="background:lightgrey">
                             <tr style="background-image: linear-gradient(90deg, #020051 0%, #090979 35%, #00d4ff 100%); color:white">
                                 <td colspan="2"><strong style="font-weight:bold; font-size: x-large">Cash in Hand as on</strong>&nbsp;&nbsp;<strong style="font-weight:bolder; font-size:x-large">{{date('m/d/Y', strtotime($date2))}}</strong></td>
-                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format(($cashInPutPre+$grossCashInflow)-$netCashOutflow)}}</td>
+                                <td class="text-right" style="font-weight: bold;font-size:large">{{number_format((float)(($cashInPutPre+$grossCashInflow)-$netCashOutflow), 2, '.', '')}}</td>
                             </tr>
                             </tbody>
                         </table>

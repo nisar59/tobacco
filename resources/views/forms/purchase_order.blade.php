@@ -224,7 +224,7 @@
 
                                     <td class='text-center'><strong style='margin-left: 20px'
                                                                     class='label label-info'>$ </strong><input
-                                                id='p_unit_price_{{$details->id}}' type='number'
+                                                id='p_unit_price_{{$details->id}}' type='text'
                                                 data-value='{{$details->id}}' onchange='update_price_amounts(this.id)'
                                                 name='p_unit_price[]' value='{{$details->unit_price}}'
                                                 class='unit_price'

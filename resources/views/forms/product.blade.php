@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="form-group has-success">
-                    <label class="col-md-4 control-label" for="val_skill_name">Name</label>
+                    <label class="col-md-4 control-label" for="val_skill_name">Type</label>
                     <div class="col-md-6">
                         <select id="val_skill_name" name="name" class="form-control" required="required">
                             <option value="">Select Product Type</option>

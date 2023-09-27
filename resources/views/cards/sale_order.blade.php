@@ -89,17 +89,17 @@
 							<span class="label label-info">{{$detail->product->packing}}</span>
 						</td>
 						<td class="text-center"><strong>x <span class="badge">{{$detail->quantity}}</span></strong></td>
-						<td class="text-center"><strong>$ {{number_format($detail->unit_price)}}</strong></td>
-						<td class="text-right"><span class="label label-primary">$ {{number_format($detail->quantity*$detail->unit_price)}}</span></td>
+						<td class="text-center"><strong>$ {{number_format((float)$detail->unit_price, 2, '.', '')}}</strong></td>
+						<td class="text-right"><span class="label label-primary">$ {{number_format((float)$detail->quantity*$detail->unit_price, 2, '.', '')}}</span></td>
 					</tr>
 				@endforeach
 				<tr class="active">
 					<td colspan="4" class="text-left"><span class="h3"><strong>Carriage</strong></span></td>
-					<td class="text-right"><span class="h3"><strong>$ {{number_format($record->carriage_amount)}}</strong></span></td>
+					<td class="text-right"><span class="h3"><strong>$ {{number_format((float)$record->carriage_amount, 2, '.', '')}}</strong></span></td>
 				</tr>
 				<tr class="active">
 					<td colspan="4" class="text-left"><span class="h3"><strong>TOTAL AMOUNT</strong></span></td>
-					<td class="text-right"><span class="h3"><strong>$ {{number_format($record->invoice_price)}}</strong></span></td>
+					<td class="text-right"><span class="h3"><strong>$ {{number_format((float)$record->invoice_price, 2, '.', '')}}</strong></span></td>
 				</tr>
 				</tbody>
 			</table>

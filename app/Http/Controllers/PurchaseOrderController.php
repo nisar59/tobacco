@@ -240,7 +240,7 @@ class PurchaseOrderController extends Controller
 
         $model->status = 1;
         $model->user_id = Auth::user()->id;
-        $model->invoice_price = (int)str_replace(',', '', $request->order_total);
+        $model->invoice_price = floatval(str_replace(',', '', $request->order_total));
 //        $model->carriage_amount = $request->carriage_amount;
         DB::beginTransaction();
         try {
@@ -341,7 +341,7 @@ class PurchaseOrderController extends Controller
             $model->order_date = $request->order_date_old;
         }
         $model->user_id = Auth::user()->id;
-        $model->invoice_price = (int)str_replace(',', '', $request->order_total);
+        $model->invoice_price = floatval(str_replace(',', '', $request->order_total));
 //        $model->carriage_amount = $request->carriage_amount;
         DB::beginTransaction();
         try {

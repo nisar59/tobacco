@@ -41,7 +41,7 @@
                         <!-- We hide the last stat to fit the other 3 on small devices -->
                         <div class="col-xs-6 col-sm-3">
                             <h2 class="animation-hatch">
-                                $<strong>{{number_format($expenses)}}</strong><br>
+                                $<strong>{{$expenses}}</strong><br>
                                 <small style="font-size: small">
                                     {{--<i class="gi gi-briefcase"></i>--}}
                                     <img height="18px" src="{{ asset('navicons/Expenses.png') }}"
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-sm-6  col-sm-3">
                             <h2 class="animation-hatch">
-                                $<strong>{{number_format($profitLoos)}}</strong><br>
+                                $<strong>{{$profitLoos}}</strong><br>
                                 <small style="font-size: small">
                                     {{--<i class="fa fa-money"></i>--}}
                                     <img height="18px" src="{{ asset('navicons/Cash.png') }}"

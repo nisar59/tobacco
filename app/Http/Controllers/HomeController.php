@@ -40,7 +40,7 @@ class HomeController extends Controller
             $start = $req->start;
             $length = $req->length;
 
-            $product = Product::where('deleted', 0)->where('status',1);
+            $product = Product::where('deleted', 0)->where('status', 1);
 
             if ($req->name != null) {
                 $product->where('name', $req->name);
@@ -56,7 +56,7 @@ class HomeController extends Controller
             }
 
             $total = $product->count();
-            $product = $product->select('products.*')->orderBy('stock_in_hand','ASC')->offset($start)->limit($length)->get();
+            $product = $product->select('products.*')->orderBy('stock_in_hand', 'ASC')->offset($start)->limit($length)->get();
 
             return DataTables::of($product)
                 ->setOffset($start)
@@ -64,7 +64,6 @@ class HomeController extends Controller
                     "recordsTotal" => $total,
                     "recordsFiltered" => $total,
                 ])
-
                 ->editColumn('id', function ($row) {
                     return $row->name;
                 })
@@ -83,35 +82,37 @@ class HomeController extends Controller
 
         $purchases = PurchaseOrder::where('status', 1)->sum('invoice_price');
         $sales = SaleOrder::where('status', 1)->sum('invoice_price');
+
         $expenses = Expense::where('deleted', 0)->whereNotIn('type', ['cash_input'])->sum('amount');
+
         $profitLoos = GeneralHelper::getProfitLoos();
 
-        $productType  = Configuration::where('list_name','product_type')
-            ->select(['lable','value'])
-            ->where('status',1)
-            ->where('deleted',0)
+        $productType = Configuration::where('list_name', 'product_type')
+            ->select(['lable', 'value'])
+            ->where('status', 1)
+            ->where('deleted', 0)
             ->get();
-        $manufacturer = Configuration::where('list_name','manufacturer')
-            ->select(['lable','value'])
-            ->where('status',1)
-            ->where('deleted',0)
+        $manufacturer = Configuration::where('list_name', 'manufacturer')
+            ->select(['lable', 'value'])
+            ->where('status', 1)
+            ->where('deleted', 0)
             ->get();
-        $flavour = Configuration::where('list_name','flavour')
-            ->select(['lable','value'])
-            ->where('status',1)
-            ->where('deleted',0)
+        $flavour = Configuration::where('list_name', 'flavour')
+            ->select(['lable', 'value'])
+            ->where('status', 1)
+            ->where('deleted', 0)
             ->get();
-        $packing = Configuration::where('list_name','packing')
-            ->select(['lable','value'])
-            ->where('status',1)
-            ->where('deleted',0)
+        $packing = Configuration::where('list_name', 'packing')
+            ->select(['lable', 'value'])
+            ->where('status', 1)
+            ->where('deleted', 0)
             ->get();
 
         return view('home', [
             'purchases' => self::shortNumber($purchases),
             'sales' => self::shortNumber($sales),
-            'expenses' => $expenses,
-            'profitLoos' => $profitLoos,
+            'expenses' => self::shortNumber($expenses),
+            'profitLoos' => self::shortNumber($profitLoos),
             'productTypes' => $productType,
             'manufacturers' => $manufacturer,
             'flavours' => $flavour,
@@ -122,10 +123,19 @@ class HomeController extends Controller
 
     function shortNumber($num)
     {
+        $tempNumb = $num;
+        if ($num < 0) {
+            $num = -($num);
+        }
         $units = ['', 'K', 'M', 'B', 'T'];
         for ($i = 0; $num >= 1000; $i++) {
             $num /= 1000;
         }
+
+        if ($tempNumb < 0) {
+            $num = -$num;
+        }
+
         return round($num, 1) . $units[$i];
     }
 }

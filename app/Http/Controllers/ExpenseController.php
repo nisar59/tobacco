@@ -43,7 +43,7 @@ class ExpenseController extends Controller
             $length = $req->length;
 
             $expense = Expense::whereIn('deleted', [1, 0])
-                ->whereNotIn('type', ['cash_input']);
+                ->whereNotIn('type', ['cash_input','purchase_payment','sale_receipts']);
 
             if ($req->type != null) {
                 $expense->where('type', $req->type);

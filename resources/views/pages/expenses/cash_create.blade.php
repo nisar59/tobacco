@@ -87,7 +87,7 @@
                         <div class="col-md-6 col-lg-6 col-sm-6 form-group has-success">
                             <label class="col-md-3 control-label" for="val_skill_payment_mode">Cash Amount</label>
                             <div class="col-md-9">
-                                <input type="number" id="example-text-input2-amount" name="amount" class="form-control"
+                                <input type="number" step="any" id="example-text-input2-amount" name="amount" class="form-control"
                                        placeholder="Please enter Cash Amount" data-toggle="tooltip"
                                        value="{{old('amount',$model->amount)}}"
                                        title="Cash Amount!">

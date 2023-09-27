@@ -177,9 +177,9 @@
 
                                     <td class='text-center'><strong style='margin-left: 20px'
                                                                     class='label label-info'>$ </strong><input
-                                                id='p_unit_price_{{$details->id}}' type='number' readonly='true'
+                                                id='p_unit_price_{{$details->id}}' type='text' readonly='true'
                                                 data-value='{{$details->id}}' onchange='update_price_amounts(this.id)'
-                                                name='p_unit_price[]' value='{{$details->unit_price}}'
+                                                name='p_unit_price[]' value='{{number_format((float)$details->unit_price, 2, '.', '')}}'
                                                 class='unit_price'
                                                 style='border: 0!important;text-align:left;margin: 10px 0 10px 0 !important;'>
                                     </td>
@@ -187,7 +187,7 @@
                                     <td class='text-center'><strong style='margin-left: 20px'
                                                                     class='label label-info'>$ </strong><input type="text"
                                                 id='p_total_price_{{$details->id}}' name='p_total_price[]'
-                                                value='{{number_format($details->quantity*$details->unit_price)}}' class='p_total_price'
+                                                value='{{number_format((float)$details->quantity*$details->unit_price, 2, '.', '')}}' class='p_total_price'
                                                 readonly='readonly'
                                                 style='border: 0!important;text-align:left;margin: 10px 0 10px 0 !important;'>
                                     </td>
