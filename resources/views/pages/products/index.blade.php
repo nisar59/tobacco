@@ -164,7 +164,13 @@
                             $(nTd).html(isnew.charAt(0).toUpperCase()+isnew.slice(1).toLowerCase());
                         }
                     },
-                    {data: 'sales_price', name: 'sales_price', orderable: false, searchable: false},
+                    {
+                        data: 'sales_price', name: 'sales_price', orderable: false, searchable: false, "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            var isnew;
+                            isnew = '<span class="">$ '+oData.sales_price+'</span>';
+                            $(nTd).html(isnew);
+                        }
+                    },
                     {
                         data: 'status', name: 'status', orderable: false, searchable: false, "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                             var isnew;
