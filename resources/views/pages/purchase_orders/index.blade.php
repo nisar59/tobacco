@@ -125,7 +125,7 @@
                 },
                 columns: [
                    {
-                        data: 'supplier_id', name: 'supplier_id', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        data: 'supplier_id', name: 'supplier_id' , orderable: false , "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                             $.ajax({
                                 type: "POST",
                                 url: "{{url('purchase/supplier')}}",
