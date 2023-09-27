@@ -72,7 +72,7 @@ class ProductController extends Controller
             }
 
             $total = $product->count();
-            $product = $product->select('products.*')->offset($strt)->limit($length)->get();
+            $product = $product->select('products.*')->offset($strt)->limit($length)->orderBy('id', 'DESC')->get();
 
             return DataTables::of($product)
                 ->setOffset($strt)
