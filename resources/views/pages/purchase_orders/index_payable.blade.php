@@ -115,7 +115,7 @@
                 },
                 columns: [
                     {
-                        data: 'exp_date', name: 'exp_date', "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        data: 'exp_date', name: 'exp_date' , orderable: false , "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                             var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                             var toDay = new Date(oData.exp_date);
                             var isnew = '<span class="">'+toDay.toLocaleDateString("en-US", options)+'</span>';

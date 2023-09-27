@@ -160,6 +160,7 @@ class SaleOrderController extends Controller
             $customer = $customer->select('customers.*','expenses.amount','expenses.payment_mode','expenses.exp_date')
                 ->offset($strt)
                 ->limit($length)
+                ->orderBy('id', 'DESC')
                 ->get();
 
             return DataTables::of($customer)

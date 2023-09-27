@@ -156,6 +156,7 @@ class PurchaseOrderController extends Controller
             $supplier = $supplier->select('suppliers.*', 'expenses.amount', 'expenses.payment_mode', 'expenses.exp_date')
                 ->offset($strt)
                 ->limit($length)
+                ->orderBy('id', 'DESC')
                 ->get();
 
             return DataTables::of($supplier)
