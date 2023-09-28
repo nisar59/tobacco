@@ -84,13 +84,13 @@
 					<tr>
 						<td class="text-center">1</td>
 						<td>
-							<h4>{{$detail->product->uuid}}</h4>
+							<h3>{{$detail->product->uuid}}</h3>
 							<span class="label label-info"><i class="fa fa-clock-o"></i>{{$detail->product->name.'-'.$detail->product->manufacturer.'-'.$detail->product->flavour}}</span>
 							<span class="label label-info">{{$detail->product->packing}}</span>
 						</td>
-						<td class="text-center"><strong>x <span class="badge">{{$detail->quantity}}</span></strong></td>
-						<td class="text-center"><strong>$ {{number_format((float)$detail->unit_price, 2, '.', '')}}</strong></td>
-						<td class="text-right"><span class="label label-primary">$ {{number_format((float)$detail->quantity*$detail->unit_price, 2, '.', '')}}</span></td>
+						<td class="text-center h3"><strong>x <span class="badge">{{$detail->quantity}}</span></strong></td>
+						<td class="text-center h3"><strong>$ {{number_format((float)$detail->unit_price, 2, '.', '')}}</strong></td>
+						<td class="text-right h3"><span class="label label-primary">$ {{number_format((float)$detail->quantity*$detail->unit_price, 2, '.', '')}}</span></td>
 					</tr>
 				@endforeach
 				<tr class="active">
