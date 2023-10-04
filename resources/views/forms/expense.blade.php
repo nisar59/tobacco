@@ -90,7 +90,7 @@
                     <div class="col-md-9">
                         <input type="number" step="any" id="example-text-input2-amount" name="amount" class="form-control"
                                placeholder="Please enter Expense Amount" data-toggle="tooltip"
-                               value="{{old('amount',$model->amount)}}"
+                               value="{{old('amount',$model->amount)}}" min="0.00"
                                title="Expense Amount!">
                         @if($errors->has('amount'))
                             <div class="invalid-feedback">
