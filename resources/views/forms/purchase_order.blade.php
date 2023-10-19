@@ -162,6 +162,7 @@
                     <!-- END purchase Info -->
                 </div>
                 <!-- END 2 Column grid -->
+                
 
                 <!-- Table -->
                 <div class="table-responsive">

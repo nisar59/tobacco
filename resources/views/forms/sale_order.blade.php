@@ -119,6 +119,7 @@
                 </div>
                 <!-- END 2 Column grid -->
 
+
                 <!-- Table -->
                 <div class="table-responsive">
                     <table class="table table-vcenter" id="tobacco_sales_order">
