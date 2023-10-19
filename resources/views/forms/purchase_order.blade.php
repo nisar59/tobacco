@@ -174,7 +174,8 @@
                                         @if(isset($model) && !empty($model->order_date)) @else required="required" @endif>
                                     <option value="">Select Product</option>
                                     @foreach($products as $product)
-                                        <option value="{{$product->id}}">{{ucfirst($product->manufacturer)}} {{$product->packing}} {{ucfirst($product->flavour)}} {{ucfirst($product->name)}}</option>
+                                        <option value="{{$product->id}}">{{$product->uuid}} </option>
+{{--                                        <option value="{{$product->id}}">{{ucfirst($product->manufacturer)}} {{$product->packing}} {{ucfirst($product->flavour)}} {{ucfirst($product->name)}}</option>--}}
                                     @endforeach
                                 </select>
                             </div>
