@@ -267,9 +267,7 @@ class UsersController extends Controller
 
         $req->validate([
             'name' => 'required',
-            'father_name' => 'required',
-            'email' => ['required', 'unique:users,email,' . $id],
-            'role' => ['required'],
+            'email' => ['required', 'unique:users,email,' . $id]
         ]);
 
         DB::beginTransaction();
