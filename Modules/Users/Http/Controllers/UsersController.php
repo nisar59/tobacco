@@ -279,8 +279,10 @@ class UsersController extends Controller
             }
             $user = User::find($id);
             $user->update($inputs);
-            $user->roles()->detach();
-            $user->assignRole($req->role);
+            if(isset($req->role) && !empty($req->role)){
+                $user->roles()->detach();
+                $user->assignRole($req->role);
+            }
             DB::commit();
             return redirect('users')->with('success', 'User successfully updated');
 
