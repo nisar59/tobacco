@@ -203,9 +203,9 @@
 
     <script>
         function check(input) {
-            if (input.value <= '0') {
+            if (input.value < '0') {
                 Swal.fire('Sales Price must b greater than 0');
-                $('#example-sales_price').val('1');
+                $('#example-sales_price').val('0');
             }
         }
 
