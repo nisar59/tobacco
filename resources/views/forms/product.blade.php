@@ -100,7 +100,7 @@
                 <div class="form-group has-success">
                     <label class="col-md-4 control-label" for="example-sales_price">Sales Price</label>
                     <div class="col-md-6">
-                        <input oninput="check(this)" step="any" min="1" type="number" id="example-sales_price" name="sales_price" class="form-control"
+                        <input oninput="check(this)" step="any" min="0" type="number" id="example-sales_price" name="sales_price" class="form-control"
                                placeholder="Please enter sales price" data-toggle="tooltip"
                                value="{{old('sales_price',$model->sales_price)}}"
                                title="Sales Price!">
