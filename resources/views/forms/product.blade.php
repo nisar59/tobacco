@@ -107,7 +107,7 @@
                                name="sales_price" class="form-control"
                                placeholder="Please enter sales price" data-toggle="tooltip"
                                value="{{old('sales_price',$model->sales_price)?$model->sales_price:'0.00'}}"
-                               title="Sales Price!">
+                               title="Sales Price!" required>
                         @if($errors->has('sales_price'))
                             <div class="invalid-feedback">
                                 <strong>{{ $errors->first('sales_price') }}</strong>
@@ -215,12 +215,12 @@
     </script>
 
     <script>
-        function check(input) {
-            if (input.value < '0') {
-                Swal.fire('Sales Price must b greater than 0');
-                $('#example-sales_price').val('0');
-            }
-        }
+        // function check(input) {
+        //     if (input.value < '0') {
+        //         Swal.fire('Sales Price must b greater than 0');
+        //         $('#example-sales_price').val('0');
+        //     }
+        // }
 
         function stockCheck(input) {
             if (input.value <= '0') {
