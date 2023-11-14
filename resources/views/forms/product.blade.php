@@ -10,10 +10,12 @@
 
             <!-- User Assist Content -->
 
-            <form action="@if(isset($model) && !empty($model->id)) {{url('/product/update')}} @else {{url('/product/save')}} @endif" method="post" class="form-horizontal form-bordered">
+            <form action="@if(isset($model) && !empty($model->id)) {{url('/product/update')}} @else {{url('/product/save')}} @endif"
+                  method="post" class="form-horizontal form-bordered">
 
                 {{csrf_field()}}
-                @if(isset($model) && !empty($model->id)) <input type="hidden" id="product_id" name="id" value="{{$model->id}}"> @else @endif
+                @if(isset($model) && !empty($model->id)) <input type="hidden" id="product_id" name="id"
+                                                                value="{{$model->id}}"> @else @endif
 
                 <div class="form-group has-success">
                     <label class="col-md-4 control-label" for="example-text-input3-uuid">Product Code</label>
@@ -85,7 +87,8 @@
                 <div class="form-group has-success">
                     <label class="col-md-4 control-label" for="example-min_stock_level">Min Stock Level</label>
                     <div class="col-md-6">
-                        <input oninput="stockCheck(this)" type="number" min="0" id="example-min_stock_level" name="min_stock_level" class="form-control"
+                        <input oninput="stockCheck(this)" type="number" min="0" id="example-min_stock_level"
+                               name="min_stock_level" class="form-control"
                                placeholder="Please enter minimum stock level" data-toggle="tooltip"
                                value="{{old('min_stock_level',$model->min_stock_level)}}"
                                title="min stock level!">
@@ -100,9 +103,10 @@
                 <div class="form-group has-success">
                     <label class="col-md-4 control-label" for="example-sales_price">Sales Price</label>
                     <div class="col-md-6">
-                        <input oninput="check(this)" step="any" min="0" type="number" id="example-sales_price" name="sales_price" class="form-control"
+                        <input oninput="check(this)" step="any" min="0" type="number" id="example-sales_price"
+                               name="sales_price" class="form-control"
                                placeholder="Please enter sales price" data-toggle="tooltip"
-                               value="@if(isset($model->sales_price) && !empty($model->sales_price)) {{old('sales_price',$model->sales_price)}} @else 0.00 @endif"
+                               value="@if(isset($model->sales_price) && !empty($model->sales_price)) {{old('sales_price',$model->sales_price)}} @else0.00@endif"
                                title="Sales Price!">
                         @if($errors->has('sales_price'))
                             <div class="invalid-feedback">
@@ -118,9 +122,11 @@
                         <div class="col-md-6">
                             <select id="val_status" name="status" class="form-control">
                                 <option @if($model->status == 1) selected="selected"
-                                        @endif value="1">Active</option>
+                                        @endif value="1">Active
+                                </option>
                                 <option @if($model->status == 0) selected="selected"
-                                        @endif value="0">In-Active</option>
+                                        @endif value="0">In-Active
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -150,8 +156,14 @@
                                 @if(isset($exBarCodes) && !empty($exBarCodes))
                                     @foreach($exBarCodes as $code)
                                         <tr id="row{{$code->id}}" class="dynamic-added">
-                                            <td><input type="text" name="barcode_old[]" value="{{$code->barcode}}" placeholder="Enter barcode" class="form-control barcode_list" /></td>
-                                            <td><button type="button" name="remove" id="{{$code->id}}" class="btn btn-danger btn_remove">X</button></td>
+                                            <td><input type="text" name="barcode_old[]" value="{{$code->barcode}}"
+                                                       placeholder="Enter barcode" class="form-control barcode_list"/>
+                                            </td>
+                                            <td>
+                                                <button type="button" name="remove" id="{{$code->id}}"
+                                                        class="btn btn-danger btn_remove">X
+                                                </button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -163,7 +175,8 @@
                 <div class="form-group form-actions">
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <button type="submit" class="btn btn-sm btn-primary pull-right"><i class="fa fa-arrow-right"></i> Save
+                        <button type="submit" class="btn btn-sm btn-primary pull-right"><i
+                                    class="fa fa-arrow-right"></i> Save
                         </button>
                     </div>
                 </div>
