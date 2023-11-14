@@ -106,7 +106,7 @@
                         <input oninput="check(this)" step="any" min="0" type="number" id="example-sales_price"
                                name="sales_price" class="form-control"
                                placeholder="Please enter sales price" data-toggle="tooltip"
-                               value="@if(isset($model->sales_price) && !empty($model->sales_price)) {{old('sales_price',$model->sales_price)}} @else 0.00 @endif"
+                               value="{{old('sales_price',$model->sales_price)?$model->sales_price:'0.00'}}"
                                title="Sales Price!">
                         @if($errors->has('sales_price'))
                             <div class="invalid-feedback">
